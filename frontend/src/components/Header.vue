@@ -9,34 +9,15 @@ const onclickLanguageHandle = (item) => {
     localStorage.setItem('locale', item)
     WindowSetTitle(t('g.title'))
 };
-onclickLanguageHandle(localStorage.getItem('locale') ?localStorage.getItem('locale') : 'zh-Hans')
+onclickLanguageHandle(localStorage.getItem('locale') ? localStorage.getItem('locale') : 'zh-Hans')
 
 </script>
 <script>
-export default {
-    data() {
-        return {
-            defaultLocale: 'zh-Hans'
-        }
-    },
-    created() {
-        // let temp=localStorage.getItem('locale')
-        //
-    },
-    methods: {
-        onclickLanguageHandle2(item) {
-            this.onclickLanguageHandle(item)
-            // item !== this.locale ? (this.locale = item) : false;
-            // WindowSetTitle(this.t('g.title'))
-            // 
-        }
-    },
-}
 </script>
 <template>
-    <div class="bg-slate-500 flex w-full p-[12px] content-center justify-between items-center select-none">
+    <div class="bg-slate-500 flex w-full p-[12px] content-center justify-between items-center select-none text-black">
         <div class="font-extrabold ">
-            <!-- {{ WindowSetTitle(t('g.title')) }} -->
+            {{ t('g.title') }}
         </div>
         <div class=" flex fw-4 gap-[6px] cursor-pointer text-slate-900">
             <div v-for="item in [...languages]" :key="item"

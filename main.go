@@ -95,7 +95,7 @@ func main() {
 		// Mac平台特定选项
 		Mac: &mac.Options{
 			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: true,
+				TitlebarAppearsTransparent: false,
 				HideTitle:                  true,
 				HideTitleBar:               false,
 				FullSizeContent:            true,
