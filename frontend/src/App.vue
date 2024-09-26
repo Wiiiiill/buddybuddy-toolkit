@@ -73,7 +73,7 @@ body {
   // width: 900px;
   // height: 520px;
   height: 100%;
-  // background-color: rgba(219, 188, 239, 0.9);
+  background-color: white;
   overflow: hidden;
 }
 
