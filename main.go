@@ -94,14 +94,15 @@ func main() {
 		// Mac platform specific options
 		// Mac平台特定选项
 		Mac: &mac.Options{
-			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: false,
-				HideTitle:                  true,
-				HideTitleBar:               false,
-				FullSizeContent:            true,
-				UseToolbar:                 false,
-				HideToolbarSeparator:       false,
-			},
+			TitleBar: mac.TitleBarDefault(),
+			// TitleBar: &mac.TitleBar{
+			// 	TitlebarAppearsTransparent: false,
+			// 	HideTitle:                  false,
+			// 	HideTitleBar:               false,
+			// 	FullSizeContent:            true,
+			// 	UseToolbar:                 false,
+			// 	HideToolbarSeparator:       false,
+			// },
 			Appearance:           mac.NSAppearanceNameDarkAqua,
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
