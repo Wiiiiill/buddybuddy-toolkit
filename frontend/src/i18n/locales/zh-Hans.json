@@ -1,0 +1,53 @@
+{
+  "main": {
+    "title": "先选目录再进行其他操作",
+    "support-formats":"目前仅支持.psd .jpg .png格式",
+    "directory":"目录",
+    "FolderBtn":"选择目录",
+    "decodeBtn":"处理文件名乱码",
+    "replaceBtn": "替换文件名",
+    "nfn":"替换文件名",
+    "ofn":"原文件名",
+    "folderTip":"输入或者点击按钮选择文件夹",
+    "ofnTip":"输入原文件名",
+    "nfnTip":"输入替换文件名",
+    "fileBtn":"文件整理"
+  },
+  "g": {
+    "title": "好哥哥工具"
+  },
+  "footer": {
+    "by": "由",
+    "dev": "开发"
+  },
+  "nav": {
+    "home": "主页",
+    "about": "关于"
+  },
+  "languages": {
+    "en": "EN",
+    "zh-Hans": "中文",
+    "fr": "Français"
+  },
+  "topbar": {
+    "minimise": "最小化",
+    "quit": "退出"
+  },
+  "homepage": {
+    "welcome": "欢迎使用基于Vue开发的Wails程序",
+    "getting-started": "快速入门",
+    "star-me": "Github"
+  },
+  "aboutpage": {
+    "title": "Wails Template Vue",
+    "project-repository": "项目仓库",
+    "author": "作者",
+    "misitebao": "米司特包",
+    "wails-repository": "Wails 仓库",
+    "thanks": "感谢各位大佬的支持🙏！"
+  },
+  "global": {
+    "not-supported": "由于是测试版，所以暂时做不了，后续会完成它。",
+    "click-link": "当前点击的链接是: "
+  }
+}
