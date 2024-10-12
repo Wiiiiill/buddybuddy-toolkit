@@ -11,6 +11,7 @@
     "folderTip":"输入或者点击按钮选择文件夹",
     "ofnTip":"输入原文件名",
     "nfnTip":"输入替换文件名",
+    "setUpAttrBtn":"缺少属性",
     "fileBtn":"文件整理"
   },
   "g": {

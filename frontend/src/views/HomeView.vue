@@ -21,6 +21,10 @@ function replaceFilenames(){
   ReplaceFilenames(path.value,originFilename.value,replaceFilename.value)
 }
 
+function setUpAttr(){
+  ReplaceFilenames(path.value,"_1.","_属性.")
+}
+
 </script>
 <template>
   <div class="p-[24px]">
@@ -41,6 +45,7 @@ function replaceFilenames(){
       <button class="btn " @click="openFolder">{{ t('main.FolderBtn') }}</button>
       <button class="btn" :disabled="!path" @click="decodeFilenames">{{ t('main.decodeBtn') }}</button>
       <button class="btn" :disabled="!path" @click="copyFilesBasedOnPrefix">{{ t('main.fileBtn') }}</button>
+      <button class="btn" :disabled="!path" @click="setUpAttr">{{ t('main.setUpAttrBtn') }}</button>
     </div>
     <div class="flex items-center gap-[6px]">
       <label class="form-control w-full max-w-xs">
