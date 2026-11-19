@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -66,6 +65,15 @@ func alertSuccess(ctx context.Context) {
 		Title:   "Info",
 		Message: "Done"})
 }
+
+// isImageFile 判断文件名是否为支持的图片格式（大小写不敏感）
+func isImageFile(name string) bool {
+	lower := strings.ToLower(name)
+	return strings.HasSuffix(lower, ".psd") ||
+		strings.HasSuffix(lower, ".jpg") ||
+		strings.HasSuffix(lower, ".png")
+}
+
 func (a *App) OpenFolder() string {
 
 	// runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
@@ -89,7 +97,7 @@ func (a *App) OpenFolder() string {
 }
 
 func (a *App) CopyFilesBasedOnPrefix(path string) error {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		alertErr(a.ctx, err)
 		return err
@@ -101,32 +109,39 @@ func (a *App) CopyFilesBasedOnPrefix(path string) error {
 		}
 
 		fileName := file.Name()
-		if strings.HasSuffix(fileName, ".psd") ||
-			strings.HasSuffix(fileName, ".jpg") || strings.HasSuffix(fileName, ".png") {
+		if !isImageFile(fileName) {
+			continue
+		}
 
-			newDir := filepath.Join(path, fileName[:strings.Index(fileName, "_")])
-			if _, err := os.Stat(newDir); os.IsNotExist(err) {
-				if err := os.MkdirAll(newDir, 0755); err != nil {
-					alertErr(a.ctx, err)
-					return err
-				}
-			}
+		// 按下划线取前缀作为子目录名；没有下划线或下划线在开头时无法归档，跳过
+		idx := strings.Index(fileName, "_")
+		if idx <= 0 {
+			continue
+		}
+		prefix := fileName[:idx]
 
-			oldFile := filepath.Join(path, fileName)
-			newFile := filepath.Join(newDir, fileName)
-			if err := os.Rename(oldFile, newFile); err != nil {
+		newDir := filepath.Join(path, prefix)
+		if _, err := os.Stat(newDir); os.IsNotExist(err) {
+			if err := os.MkdirAll(newDir, 0755); err != nil {
 				alertErr(a.ctx, err)
 				return err
 			}
-			fmt.Printf("Moved: %s -> %s\n", oldFile, newFile)
 		}
+
+		oldFile := filepath.Join(path, fileName)
+		newFile := filepath.Join(newDir, fileName)
+		if err := os.Rename(oldFile, newFile); err != nil {
+			alertErr(a.ctx, err)
+			return err
+		}
+		fmt.Printf("Moved: %s -> %s\n", oldFile, newFile)
 	}
 	alertSuccess(a.ctx)
 	return nil
 }
 
 func (a *App) DecodeFilenames(path string) error {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		alertErr(a.ctx, err)
 		return err
@@ -138,22 +153,27 @@ func (a *App) DecodeFilenames(path string) error {
 		}
 
 		fileName := file.Name()
-		if strings.HasSuffix(fileName, ".psd") ||
-			strings.HasSuffix(fileName, ".jpg") || strings.HasSuffix(fileName, ".png") {
-
-			newName, err := url.QueryUnescape(fileName)
-			if err != nil {
-				alertErr(a.ctx, err)
-				return err
-			}
-			oldFile := filepath.Join(path, fileName)
-			newFile := filepath.Join(path, newName)
-			if err := os.Rename(oldFile, newFile); err != nil {
-				alertErr(a.ctx, err)
-				return err
-			}
-			fmt.Printf("Renamed: %s -> %s\n", oldFile, newFile)
+		if !isImageFile(fileName) {
+			continue
 		}
+
+		newName, err := url.QueryUnescape(fileName)
+		if err != nil {
+			alertErr(a.ctx, err)
+			return err
+		}
+		// 解码后无变化的文件无需重命名，避免 rename 到自身报错
+		if newName == fileName {
+			continue
+		}
+
+		oldFile := filepath.Join(path, fileName)
+		newFile := filepath.Join(path, newName)
+		if err := os.Rename(oldFile, newFile); err != nil {
+			alertErr(a.ctx, err)
+			return err
+		}
+		fmt.Printf("Renamed: %s -> %s\n", oldFile, newFile)
 	}
 
 	alertSuccess(a.ctx)
@@ -161,7 +181,12 @@ func (a *App) DecodeFilenames(path string) error {
 }
 
 func (a *App) ReplaceFilenames(path, before, after string) error {
-	files, err := ioutil.ReadDir(path)
+	// before 为空时替换无意义，直接返回
+	if before == "" {
+		return nil
+	}
+
+	files, err := os.ReadDir(path)
 	if err != nil {
 		alertErr(a.ctx, err)
 		return err
@@ -173,17 +198,22 @@ func (a *App) ReplaceFilenames(path, before, after string) error {
 		}
 
 		fileName := file.Name()
-		if strings.Contains(fileName, before) && (strings.HasSuffix(fileName, ".psd") ||
-			strings.HasSuffix(fileName, ".jpg") || strings.HasSuffix(fileName, ".png")) {
-			newName := strings.Replace(fileName, before, after, -1)
-			oldFile := filepath.Join(path, fileName)
-			newFile := filepath.Join(path, newName)
-			if err := os.Rename(oldFile, newFile); err != nil {
-				alertErr(a.ctx, err)
-				return err
-			}
-			fmt.Printf("Replaced: %s -> %s\n", oldFile, newFile)
+		if !isImageFile(fileName) || !strings.Contains(fileName, before) {
+			continue
 		}
+
+		newName := strings.ReplaceAll(fileName, before, after)
+		if newName == fileName {
+			continue
+		}
+
+		oldFile := filepath.Join(path, fileName)
+		newFile := filepath.Join(path, newName)
+		if err := os.Rename(oldFile, newFile); err != nil {
+			alertErr(a.ctx, err)
+			return err
+		}
+		fmt.Printf("Replaced: %s -> %s\n", oldFile, newFile)
 	}
 
 	alertSuccess(a.ctx)

@@ -77,7 +77,7 @@ func main() {
 			Handler:    nil,
 			Middleware: nil,
 		},
-		Bind: []interface{}{
+		Bind: []any{
 			app,
 		},
 		// Windows platform specific options
@@ -107,8 +107,8 @@ func main() {
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{
-				Title:   "Wails Template Vue",
-				Message: "A Wails template based on Vue and Vue-Router",
+				Title:   "buddybuddy-toolkit",
+				Message: "Batch image filename toolkit (decode, sort by prefix, replace)",
 				Icon:    icon,
 			},
 		},
