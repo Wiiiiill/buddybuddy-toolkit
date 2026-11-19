@@ -11,7 +11,7 @@
     "folderTip": "Enter Folder Path or Click Open Folder",
     "ofnTip": "Enter Origin Filename",
     "nfnTip": "Enter Replace Filename",
-    "setUpAttrBtn":"SetUpAttr",
+    "setUpAttrBtn": "SetUpAttr",
     "fileBtn": "FILING"
   },
   "g": {
@@ -21,23 +21,15 @@
     "by": "Developed by",
     "dev": ""
   },
-  "nav": {
-    "home": "Home",
-    "about": "About"
-  },
   "languages": {
     "en": "EN",
-    "zh-Hans": "中文",
-    "fr": "Français"
+    "zh-Hans": "中文"
   },
   "topbar": {
     "minimise": "Minimise",
-    "quit": "Quit"
-  },
-  "homepage": {
-    "welcome": "Welcome to use Wails program developed based on Vue",
-    "getting-started": "Getting Started",
-    "star-me": "Github"
+    "maximise": "Maximise",
+    "close": "Close",
+    "toggleTheme": "Toggle theme"
   },
   "aboutpage": {
     "title": "Wails Template Vue",

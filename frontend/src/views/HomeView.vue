@@ -28,9 +28,9 @@ function setUpAttr(){
 </script>
 <template>
   <div class="p-[24px]">
-    <div>
+    <h1 class="mb-4 text-lg font-semibold">
       {{ t('main.title') }}
-    </div>
+    </h1>
     <div class="flex items-center gap-[6px]">
       <label class="form-control w-full max-w-xs">
         <div class="label">
