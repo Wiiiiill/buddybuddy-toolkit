@@ -12,7 +12,8 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx    context.Context
+	config Config
 }
 
 // NewApp creates a new App application struct
@@ -27,6 +28,7 @@ func (a *App) startup(ctx context.Context) {
 	// Perform your setup here
 	// 在这里执行初始化设置
 	a.ctx = ctx
+	a.config = loadConfig()
 }
 
 // domReady is called after the front-end dom has been loaded
@@ -52,26 +54,26 @@ func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 	// 在此处做一些资源释放的操作
 }
-func alertErr(ctx context.Context, err error) {
-	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
-		Type:    runtime.ErrorDialog,
-		Title:   "something wrong",
-		Message: err.Error(),
-	})
-}
-func alertSuccess(ctx context.Context) {
-	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
-		Type:    runtime.InfoDialog,
-		Title:   "Info",
-		Message: "Done"})
+// GetConfig 返回当前配置（供前端读取）
+func (a *App) GetConfig() Config {
+	return a.config
 }
 
-// isImageFile 判断文件名是否为支持的图片格式（大小写不敏感）
-func isImageFile(name string) bool {
+// SaveConfig 保存配置（供前端写入）
+func (a *App) SaveConfig(cfg Config) error {
+	a.config = cfg
+	return saveConfig(cfg)
+}
+
+// isImageFile 判断文件名是否为配置中支持的图片格式（大小写不敏感）
+func (a *App) isImageFile(name string) bool {
 	lower := strings.ToLower(name)
-	return strings.HasSuffix(lower, ".psd") ||
-		strings.HasSuffix(lower, ".jpg") ||
-		strings.HasSuffix(lower, ".png")
+	for _, ext := range a.config.SupportedFormats {
+		if strings.HasSuffix(lower, strings.ToLower(ext)) {
+			return true
+		}
+	}
+	return false
 }
 
 func (a *App) OpenFolder() string {
@@ -88,28 +90,26 @@ func (a *App) OpenFolder() string {
 
 	directory, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{})
 	if err != nil {
-		alertErr(a.ctx, err)
-		// 处理错误
 		return ""
 	}
 	// 返回选择的目录
 	return directory
 }
 
-func (a *App) CopyFilesBasedOnPrefix(path string) error {
+func (a *App) CopyFilesBasedOnPrefix(path string) (int, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		alertErr(a.ctx, err)
-		return err
+		return 0, err
 	}
 
+	count := 0
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
 		fileName := file.Name()
-		if !isImageFile(fileName) {
+		if !a.isImageFile(fileName) {
 			continue
 		}
 
@@ -123,44 +123,41 @@ func (a *App) CopyFilesBasedOnPrefix(path string) error {
 		newDir := filepath.Join(path, prefix)
 		if _, err := os.Stat(newDir); os.IsNotExist(err) {
 			if err := os.MkdirAll(newDir, 0755); err != nil {
-				alertErr(a.ctx, err)
-				return err
+				return count, err
 			}
 		}
 
 		oldFile := filepath.Join(path, fileName)
 		newFile := filepath.Join(newDir, fileName)
 		if err := os.Rename(oldFile, newFile); err != nil {
-			alertErr(a.ctx, err)
-			return err
+			return count, err
 		}
+		count++
 		fmt.Printf("Moved: %s -> %s\n", oldFile, newFile)
 	}
-	alertSuccess(a.ctx)
-	return nil
+	return count, nil
 }
 
-func (a *App) DecodeFilenames(path string) error {
+func (a *App) DecodeFilenames(path string) (int, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		alertErr(a.ctx, err)
-		return err
+		return 0, err
 	}
 
+	count := 0
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
 		fileName := file.Name()
-		if !isImageFile(fileName) {
+		if !a.isImageFile(fileName) {
 			continue
 		}
 
 		newName, err := url.QueryUnescape(fileName)
 		if err != nil {
-			alertErr(a.ctx, err)
-			return err
+			return count, err
 		}
 		// 解码后无变化的文件无需重命名，避免 rename 到自身报错
 		if newName == fileName {
@@ -170,35 +167,33 @@ func (a *App) DecodeFilenames(path string) error {
 		oldFile := filepath.Join(path, fileName)
 		newFile := filepath.Join(path, newName)
 		if err := os.Rename(oldFile, newFile); err != nil {
-			alertErr(a.ctx, err)
-			return err
+			return count, err
 		}
+		count++
 		fmt.Printf("Renamed: %s -> %s\n", oldFile, newFile)
 	}
-
-	alertSuccess(a.ctx)
-	return nil
+	return count, nil
 }
 
-func (a *App) ReplaceFilenames(path, before, after string) error {
+func (a *App) ReplaceFilenames(path, before, after string) (int, error) {
 	// before 为空时替换无意义，直接返回
 	if before == "" {
-		return nil
+		return 0, nil
 	}
 
 	files, err := os.ReadDir(path)
 	if err != nil {
-		alertErr(a.ctx, err)
-		return err
+		return 0, err
 	}
 
+	count := 0
 	for _, file := range files {
 		if file.IsDir() {
 			continue
 		}
 
 		fileName := file.Name()
-		if !isImageFile(fileName) || !strings.Contains(fileName, before) {
+		if !a.isImageFile(fileName) || !strings.Contains(fileName, before) {
 			continue
 		}
 
@@ -210,12 +205,10 @@ func (a *App) ReplaceFilenames(path, before, after string) error {
 		oldFile := filepath.Join(path, fileName)
 		newFile := filepath.Join(path, newName)
 		if err := os.Rename(oldFile, newFile); err != nil {
-			alertErr(a.ctx, err)
-			return err
+			return count, err
 		}
+		count++
 		fmt.Printf("Replaced: %s -> %s\n", oldFile, newFile)
 	}
-
-	alertSuccess(a.ctx)
-	return nil
+	return count, nil
 }

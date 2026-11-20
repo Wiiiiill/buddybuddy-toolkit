@@ -53,9 +53,9 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:             "buddybuddy-toolkit",
 		Width:             900,
-		Height:            400,
+		Height:            640,
 		MinWidth:          900,
-		MinHeight:         400,
+		MinHeight:         640,
 		MaxWidth:          1200,
 		MaxHeight:         800,
 		DisableResize:     false,

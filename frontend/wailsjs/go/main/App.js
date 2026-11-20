@@ -10,10 +10,18 @@ export function DecodeFilenames(arg1) {
   return window['go']['main']['App']['DecodeFilenames'](arg1);
 }
 
+export function GetConfig() {
+  return window['go']['main']['App']['GetConfig']();
+}
+
 export function OpenFolder() {
   return window['go']['main']['App']['OpenFolder']();
 }
 
 export function ReplaceFilenames(arg1, arg2, arg3) {
   return window['go']['main']['App']['ReplaceFilenames'](arg1, arg2, arg3);
+}
+
+export function SaveConfig(arg1) {
+  return window['go']['main']['App']['SaveConfig'](arg1);
 }
