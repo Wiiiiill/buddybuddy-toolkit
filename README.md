@@ -24,7 +24,8 @@
 - **按前缀归档** — 根据文件名下划线前的部分自动创建子文件夹并归入
 - **替换文件名** — 查找并替换文件名中的一段字符串，支持快捷预设（如 `.jpg` → `_首图.jpg`）
 - **图片压缩** — 将目录中超过目标大小（默认 2 MB）的 JPG/PNG 压缩到目标以内：JPEG 使用 MozJPEG（WebAssembly），PNG 使用 pngquant 量化算法，压缩后直接替换原图
-- **托盘与关闭行为** — 关闭窗口时可选择最小化到托盘或完全退出，首次关闭会询问，之后可在设置页修改
+- **托盘与关闭行为** — 关闭窗口时可选择最小化到托盘或完全退出，首次关闭会询问，之后可在设置页修改；macOS 上为最小化到 Dock
+- **单例运行** — 重复启动时激活已有窗口，而不是打开第二个实例
 - **可配置** — 支持的图片格式、快捷预设规则、图片压缩目标大小、关闭行为均可在设置页中调整，配置持久化保存
 - **多主题** — 内置 daisyUI 全部 32 个主题，带配色预览，一键切换
 - **中英双语** — 界面语言可随时切换
@@ -47,6 +48,8 @@
 - [Go](https://go.dev/dl/) 1.26+
 - [Node.js](https://nodejs.org/) 18+
 - [Wails CLI](https://wails.io/docs/gettingstarted/installation) v2.17.1
+- macOS：Xcode Command Line Tools（编译原生托盘组件需要 clang）
+- Linux：`libgtk-3-dev`、`libwebkit2gtk-4.1-dev`
 
 ```bash
 go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1

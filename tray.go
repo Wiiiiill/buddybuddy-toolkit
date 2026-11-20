@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	_ "embed"
+	stdruntime "runtime"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -17,6 +18,16 @@ var trayIconICO []byte
 func (a *App) showMainWindow() {
 	runtime.WindowShow(a.ctx)
 	runtime.WindowUnminimise(a.ctx)
+}
+
+// hideToTray 把窗口收起来。
+// macOS 上托盘菜单受主线程限制，先最小化到 Dock，保证一定能从 Dock 恢复。
+func (a *App) hideToTray(ctx context.Context) {
+	if stdruntime.GOOS == "darwin" {
+		runtime.WindowMinimise(ctx)
+		return
+	}
+	runtime.WindowHide(ctx)
 }
 
 // trayTexts 返回托盘菜单文案
@@ -42,7 +53,7 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 
 	switch a.config.CloseBehavior {
 	case "tray":
-		runtime.WindowHide(ctx)
+		a.hideToTray(ctx)
 		return true
 	case "quit":
 		return false
@@ -66,7 +77,7 @@ func (a *App) ResolveClose(action string) {
 	}
 
 	if action == "tray" {
-		runtime.WindowHide(a.ctx)
+		a.hideToTray(a.ctx)
 		return
 	}
 

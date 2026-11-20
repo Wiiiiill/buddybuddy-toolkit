@@ -22,6 +22,18 @@ extern void tray_on_quit(void);
 
 static BuddyTrayController *gTrayController = nil;
 
+// 递归清掉视图层的背景色，避免圆角外露出矩形底色
+static void clear_view_background(NSView *view) {
+    if (view == nil) {
+        return;
+    }
+    view.wantsLayer = YES;
+    view.layer.backgroundColor = [NSColor clearColor].CGColor;
+    for (NSView *subview in view.subviews) {
+        clear_view_background(subview);
+    }
+}
+
 void tray_setup(const char *showText, const char *quitText, const char *tooltip, const void *iconData, int iconLen) {
     NSString *showStr = [NSString stringWithUTF8String:showText ? showText : ""];
     NSString *quitStr = [NSString stringWithUTF8String:quitText ? quitText : ""];
@@ -30,6 +42,29 @@ void tray_setup(const char *showText, const char *quitText, const char *tooltip,
 
     // Wails 的主线程已经在跑 NSApplication，这里只把创建动作投递到主队列
     dispatch_async(dispatch_get_main_queue(), ^{
+        // 让窗口真正透明，CSS 圆角外才能透出桌面而不是窗口矩形底色
+        for (NSWindow *window in [NSApp windows]) {
+            window.opaque = NO;
+            window.backgroundColor = [NSColor clearColor];
+            window.hasShadow = NO;
+            window.titlebarAppearsTransparent = YES;
+            clear_view_background(window.contentView);
+            clear_view_background(window.contentView.superview);
+        }
+
+        // 点击 Dock 图标重新激活应用时，把窗口显示出来
+        static BOOL activationObserverInstalled = NO;
+        if (!activationObserverInstalled) {
+            activationObserverInstalled = YES;
+            [[NSNotificationCenter defaultCenter]
+                addObserverForName:NSApplicationDidBecomeActiveNotification
+                            object:nil
+                             queue:[NSOperationQueue mainQueue]
+                        usingBlock:^(NSNotification *note) {
+                            tray_on_show();
+                        }];
+        }
+
         if (gTrayController != nil) {
             return;
         }

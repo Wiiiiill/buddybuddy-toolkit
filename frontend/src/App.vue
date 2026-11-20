@@ -28,6 +28,11 @@ const syncWindowBackground = () => {
     return;
   }
 
+  // macOS 的窗口透明完全由原生层处理；再设置底色会在 CSS 圆角外露出矩形色块
+  if (document.documentElement.dataset.platform === "darwin") {
+    return;
+  }
+
   const shell = document.querySelector(".app-shell");
   // Windows 的窗口底色只会从四角露出，四角紧邻 Header/Footer（base-200），
   // 取它们的底色可以避免在系统圆角与 CSS 圆角之间出现一圈异色

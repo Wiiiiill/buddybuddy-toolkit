@@ -24,7 +24,8 @@ buddybuddy-toolkit is a small desktop utility built with [Wails](https://wails.i
 - **Archive by prefix** — Create subfolders from the part before the underscore and move files in
 - **Replace in filenames** — Find and replace a substring, with quick presets (e.g. `.jpg` → `_首图.jpg`)
 - **Image compression** — Compress JPG/PNG files larger than the target size (2 MB by default): JPEG via MozJPEG (WebAssembly), PNG via pngquant-style quantization; compressed files replace the originals
-- **Tray & close behavior** — Close to the system tray or quit completely; asked on first close and changeable in Settings
+- **Tray & close behavior** — Close to the system tray or quit completely; asked on first close and changeable in Settings (on macOS it minimizes to the Dock)
+- **Single instance** — Launching again activates the existing window instead of opening a second instance
 - **Configurable** — Supported image formats, preset rules, compression target size, and close behavior are editable in Settings and persisted
 - **Themes** — All 32 built-in daisyUI themes with color previews
 - **Bilingual** — Switch between English and Chinese at any time
@@ -47,6 +48,8 @@ Grab the package for your platform from [Releases](https://github.com/Wiiiiill/b
 - [Go](https://go.dev/dl/) 1.26+
 - [Node.js](https://nodejs.org/) 18+
 - [Wails CLI](https://wails.io/docs/gettingstarted/installation) v2.17.1
+- macOS: Xcode Command Line Tools (clang is required for the native tray component)
+- Linux: `libgtk-3-dev`, `libwebkit2gtk-4.1-dev`
 
 ```bash
 go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
