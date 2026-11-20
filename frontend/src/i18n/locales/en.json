@@ -1,18 +1,22 @@
 {
   "main": {
     "title": "Open Folder before performing operations",
-    "support-formats": "Supported formats: psd png jpg",
+    "support-formats": "Supported formats",
     "directory": "Folder Path",
     "FolderBtn": "Open Folder",
     "decodeBtn": "Filename Decode",
-    "replaceBtn": "Filename Replace",
-    "nfn": "Replace Filename",
-    "ofn": "Origin Filename",
-    "folderTip": "Enter Folder Path or Click Open Folder",
-    "ofnTip": "Enter Origin Filename",
-    "nfnTip": "Enter Replace Filename",
-    "setUpAttrBtn": "SetUpAttr",
-    "fileBtn": "FILING"
+    "replaceBtn": "Replace",
+    "nfn": "Replace with",
+    "ofn": "Find",
+    "folderTip": "Enter folder path or click Open Folder",
+    "ofnTip": "Enter string to find",
+    "nfnTip": "Enter replacement string",
+    "fileBtn": "Archive by prefix",
+    "fileOps": "File operations",
+    "replaceTitle": "Replace filename",
+    "quick": "Quick",
+    "needDir": "Select a folder first",
+    "doneCount": "Processed {count} files"
   },
   "g": {
     "title": "buddybuddy-toolkit"
@@ -30,18 +34,26 @@
     "maximise": "Maximise",
     "close": "Close",
     "toggleTheme": "Toggle theme",
-    "language": "Switch language"
+    "language": "Switch language",
+    "settings": "Settings"
   },
-  "aboutpage": {
-    "title": "Wails Template Vue",
-    "project-repository": "Project Repository",
+  "settings": {
+    "title": "Settings",
+    "formats": "Supported formats",
+    "addFormat": "Add format",
+    "presets": "Preset rules",
+    "addPreset": "Add rule",
+    "presetName": "Name",
+    "find": "Find",
+    "replaceTo": "Replace with",
+    "save": "Save",
+    "back": "Back",
+    "saved": "Saved"
+  },
+  "about": {
+    "title": "About",
+    "intro": "buddybuddy-toolkit is a desktop tool for batch-processing image filenames: decode, archive by prefix, and string replacement.",
     "author": "Author",
-    "misitebao": "Misitebao",
-    "wails-repository": "Wails Repository",
-    "thanks": "Thank you all for your support🙏!"
-  },
-  "global": {
-    "not-supported": "Because it is a beta version, it can't be done for the time being, it will be completed later.",
-    "click-link": "The currently clicked link is: "
+    "repo": "Repository"
   }
 }

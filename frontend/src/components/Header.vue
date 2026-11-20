@@ -1,9 +1,11 @@
 <script setup>
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { WindowMinimise, WindowToggleMaximise, Quit } from "../../wailsjs/runtime";
 import { useThemeStore } from "../stores/theme";
 
 const { t, availableLocales: languages, locale } = useI18n();
+const router = useRouter();
 const themeStore = useThemeStore();
 
 // 初始化语言：优先读取本地存储，否则默认中文
@@ -32,7 +34,7 @@ const close = () => Quit();
     <!-- 标题（左） -->
     <div class="px-3 font-bold">{{ t('g.title') }}</div>
 
-    <!-- 语言 + 主题切换（绝对居中，位置固定） -->
+    <!-- 语言 + 主题 + 设置（绝对居中，位置固定） -->
     <div
       class="no-drag absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1">
       <!-- 语言切换（地球图标 + 下拉菜单） -->
@@ -74,7 +76,6 @@ const close = () => Quit();
           type="checkbox"
           :checked="themeStore.theme === 'dark'"
           @change="themeStore.toggle()" />
-        <!-- 太阳（暗色时显示，点击切回亮色） -->
         <svg
           class="swap-on h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +95,6 @@ const close = () => Quit();
           <path d="m6.34 17.66-1.41 1.41" />
           <path d="m19.07 4.93-1.41 1.41" />
         </svg>
-        <!-- 月亮（亮色时显示，点击切到暗色） -->
         <svg
           class="swap-off h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
@@ -107,6 +107,25 @@ const close = () => Quit();
           <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
         </svg>
       </label>
+
+      <!-- 设置 -->
+      <button
+        class="btn btn-ghost btn-circle btn-sm"
+        :title="t('topbar.settings')"
+        @click="router.push('/settings')">
+        <svg
+          class="h-5 w-5"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </button>
     </div>
 
     <!-- 窗口控制（右） -->

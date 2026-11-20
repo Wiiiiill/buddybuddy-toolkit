@@ -1,18 +1,22 @@
 {
   "main": {
     "title": "先选目录再进行其他操作",
-    "support-formats": "目前仅支持.psd .jpg .png格式",
+    "support-formats": "支持格式",
     "directory": "目录",
     "FolderBtn": "选择目录",
     "decodeBtn": "处理文件名乱码",
-    "replaceBtn": "替换文件名",
-    "nfn": "替换文件名",
-    "ofn": "原文件名",
-    "folderTip": "输入或者点击按钮选择文件夹",
-    "ofnTip": "输入原文件名",
-    "nfnTip": "输入替换文件名",
-    "setUpAttrBtn": "缺少属性",
-    "fileBtn": "文件整理"
+    "replaceBtn": "替换",
+    "nfn": "替换为",
+    "ofn": "查找",
+    "folderTip": "输入或点击按钮选择文件夹",
+    "ofnTip": "输入要查找的字符串",
+    "nfnTip": "输入替换后的字符串",
+    "fileBtn": "按前缀归档",
+    "fileOps": "文件整理",
+    "replaceTitle": "替换文件名",
+    "quick": "快捷",
+    "needDir": "请先选择目录",
+    "doneCount": "已处理 {count} 个文件"
   },
   "g": {
     "title": "好哥哥工具"
@@ -30,18 +34,26 @@
     "maximise": "最大化",
     "close": "关闭",
     "toggleTheme": "切换主题",
-    "language": "切换语言"
+    "language": "切换语言",
+    "settings": "设置"
   },
-  "aboutpage": {
-    "title": "Wails Template Vue",
-    "project-repository": "项目仓库",
+  "settings": {
+    "title": "设置",
+    "formats": "支持的格式",
+    "addFormat": "添加格式",
+    "presets": "预填充规则",
+    "addPreset": "添加规则",
+    "presetName": "名称",
+    "find": "查找",
+    "replaceTo": "替换为",
+    "save": "保存",
+    "back": "返回",
+    "saved": "已保存"
+  },
+  "about": {
+    "title": "关于",
+    "intro": "「好哥哥工具」是一个批量处理图片文件名的桌面小工具，支持文件名解码、按前缀归档、字符串替换等操作。",
     "author": "作者",
-    "misitebao": "米司特包",
-    "wails-repository": "Wails 仓库",
-    "thanks": "感谢各位大佬的支持🙏！"
-  },
-  "global": {
-    "not-supported": "由于是测试版，所以暂时做不了，后续会完成它。",
-    "click-link": "当前点击的链接是: "
+    "repo": "仓库"
   }
 }
