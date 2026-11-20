@@ -47,7 +47,7 @@ body {
 
 /* macOS 系统窗口圆角约为 20px，跟随系统观感 */
 html[data-platform="darwin"] {
-  --window-radius: 20px;
+  --window-radius: 22px;
 }
 
 input,

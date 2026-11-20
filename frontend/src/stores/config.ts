@@ -24,6 +24,7 @@ export const useConfigStore = defineStore("config", {
     locale: "zh-Hans",
     theme: "light",
     compressTargetBytes: 2 * 1024 * 1024,
+    closeBehavior: "",
   }),
   actions: {
     async load() {
@@ -37,6 +38,7 @@ export const useConfigStore = defineStore("config", {
       this.locale = cfg.locale || "zh-Hans";
       this.theme = cfg.theme || "light";
       this.compressTargetBytes = cfg.compressTargetBytes || 2 * 1024 * 1024;
+      this.closeBehavior = cfg.closeBehavior || "";
       this.applyTheme();
     },
     async save() {
@@ -47,6 +49,7 @@ export const useConfigStore = defineStore("config", {
           locale: this.locale,
           theme: this.theme,
           compressTargetBytes: this.compressTargetBytes,
+          closeBehavior: this.closeBehavior,
         })
       );
     },
@@ -73,6 +76,7 @@ export const useConfigStore = defineStore("config", {
       this.locale = cfg.locale || "zh-Hans";
       this.theme = cfg.theme || "light";
       this.compressTargetBytes = cfg.compressTargetBytes || 2 * 1024 * 1024;
+      this.closeBehavior = cfg.closeBehavior || "";
       this.applyTheme();
     },
   },

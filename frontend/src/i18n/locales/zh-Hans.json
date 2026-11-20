@@ -61,7 +61,12 @@
     "resetDefault": "恢复默认",
     "resetDone": "已恢复默认设置",
     "compressTarget": "图片压缩目标大小",
-    "compressTargetTip": "超过该大小的 JPG/PNG 会被压缩，默认 2 MB"
+    "compressTargetTip": "超过该大小的 JPG/PNG 会被压缩，默认 2 MB",
+    "closeBehavior": "关闭按钮行为",
+    "closeAsk": "每次询问",
+    "closeTray": "最小化到托盘",
+    "closeQuit": "完全退出",
+    "closeTip": "选择“最小化到托盘”后，可通过托盘图标重新打开窗口"
   },
   "themes": {
     "light": "浅色",
@@ -96,6 +101,13 @@
     "dim": "暗调",
     "nord": "北欧",
     "sunset": "日落"
+  },
+  "closePrompt": {
+    "title": "关闭窗口",
+    "message": "要最小化到托盘，还是完全退出？之后可以在设置页修改。",
+    "tray": "最小化到托盘",
+    "quit": "完全退出",
+    "cancel": "取消"
   },
   "about": {
     "title": "关于",

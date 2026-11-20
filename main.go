@@ -111,7 +111,8 @@ func main() {
 			// },
 			Appearance:           mac.NSAppearanceNameDarkAqua,
 			WebviewIsTransparent: true,
-			WindowIsTranslucent:  true,
+			// 关闭毛玻璃材质：NSVisualEffectView 是矩形，会在 CSS 圆角外露出直角底色
+			WindowIsTranslucent: false,
 			About: &mac.AboutInfo{
 				Title:   "buddybuddy-toolkit",
 				Message: "Batch image filename toolkit (decode, sort by prefix, replace)",

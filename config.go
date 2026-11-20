@@ -21,6 +21,8 @@ type Config struct {
 	Theme            string   `json:"theme"`
 	// CompressTargetBytes 图片压缩的目标大小（字节），默认 2 MiB
 	CompressTargetBytes int64 `json:"compressTargetBytes"`
+	// CloseBehavior 关闭按钮行为："" 表示首次关闭时询问，"tray" 最小化到托盘，"quit" 完全退出
+	CloseBehavior string `json:"closeBehavior"`
 }
 
 // defaultConfig 返回默认配置

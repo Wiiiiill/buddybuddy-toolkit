@@ -61,7 +61,12 @@
     "resetDefault": "Reset to default",
     "resetDone": "Reset to default settings",
     "compressTarget": "Image compression target size",
-    "compressTargetTip": "JPG/PNG files larger than this will be compressed. Default 2 MB."
+    "compressTargetTip": "JPG/PNG files larger than this will be compressed. Default 2 MB.",
+    "closeBehavior": "Close button behavior",
+    "closeAsk": "Ask every time",
+    "closeTray": "Minimize to tray",
+    "closeQuit": "Quit completely",
+    "closeTip": "When minimizing to tray, use the tray icon to reopen the window"
   },
   "themes": {
     "light": "light",
@@ -96,6 +101,13 @@
     "dim": "dim",
     "nord": "nord",
     "sunset": "sunset"
+  },
+  "closePrompt": {
+    "title": "Close window",
+    "message": "Minimize to the tray, or quit completely? You can change this later in Settings.",
+    "tray": "Minimize to tray",
+    "quit": "Quit completely",
+    "cancel": "Cancel"
   },
   "about": {
     "title": "About",

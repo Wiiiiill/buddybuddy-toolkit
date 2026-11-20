@@ -22,6 +22,7 @@ export namespace main {
 	    locale: string;
 	    theme: string;
 	    compressTargetBytes: number;
+	    closeBehavior: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -34,6 +35,7 @@ export namespace main {
 	        this.locale = source["locale"];
 	        this.theme = source["theme"];
 	        this.compressTargetBytes = source["compressTargetBytes"];
+	        this.closeBehavior = source["closeBehavior"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

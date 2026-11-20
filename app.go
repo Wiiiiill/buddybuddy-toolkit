@@ -14,6 +14,8 @@ import (
 type App struct {
 	ctx    context.Context
 	config Config
+	// quitting 为 true 时 beforeClose 不再拦截，允许真正退出
+	quitting bool
 }
 
 // NewApp creates a new App application struct
@@ -29,6 +31,7 @@ func (a *App) startup(ctx context.Context) {
 	// 在这里执行初始化设置
 	a.ctx = ctx
 	a.config = loadConfig()
+	go a.runTray()
 }
 
 // domReady is called after the front-end dom has been loaded
@@ -38,21 +41,10 @@ func (a *App) domReady(ctx context.Context) {
 	// 在这里添加你的操作
 }
 
-// beforeClose is called when the application is about to quit,
-// either by clicking the window close button or calling runtime.Quit.
-// Returning true will cause the application to continue,
-// false will continue shutdown as normal.
-// beforeClose在单击窗口关闭按钮或调用runtime.Quit即将退出应用程序时被调用.
-// 返回 true 将导致应用程序继续，false 将继续正常关闭。
-func (a *App) beforeClose(ctx context.Context) (prevent bool) {
-	return false
-}
-
 // shutdown is called at application termination
 // 在应用程序终止时被调用
 func (a *App) shutdown(ctx context.Context) {
-	// Perform your teardown here
-	// 在此处做一些资源释放的操作
+	a.stopTray()
 }
 // GetConfig 返回当前配置（供前端读取）
 func (a *App) GetConfig() Config {

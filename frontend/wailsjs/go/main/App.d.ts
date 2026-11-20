@@ -20,4 +20,6 @@ export function ReplaceImageBase64(arg1:string,arg2:string):Promise<number>;
 
 export function ResetConfig():Promise<main.Config>;
 
+export function ResolveClose(arg1:string):Promise<void>;
+
 export function SaveConfig(arg1:main.Config):Promise<void>;

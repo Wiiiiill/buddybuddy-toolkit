@@ -1,14 +1,24 @@
 <script setup>
-import { onMounted, nextTick, watch } from "vue";
+import { onMounted, onBeforeUnmount, nextTick, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useConfigStore } from "./stores/config";
 import { toast } from "./stores/toast";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
-import { WindowSetBackgroundColour } from "../wailsjs/runtime";
+import { EventsOn, WindowSetBackgroundColour } from "../wailsjs/runtime";
+import { ResolveClose } from "../wailsjs/go/main/App";
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const configStore = useConfigStore();
+
+// 关闭确认框：Go 端 beforeClose 触发 close:ask 事件后由前端展示
+const showClosePrompt = ref(false);
+let offCloseAsk = null;
+
+const resolveClose = (action) => {
+  showClosePrompt.value = false;
+  ResolveClose(action).catch(() => {});
+};
 
 // 让原生窗口底色跟随当前主题：
 // Windows 的无边框窗口在 CSS 圆角之外会露出窗口类背景色，
@@ -47,6 +57,13 @@ onMounted(async () => {
   await configStore.load();
   locale.value = configStore.locale;
   syncAfterThemeChange();
+  offCloseAsk = EventsOn("close:ask", () => {
+    showClosePrompt.value = true;
+  });
+});
+
+onBeforeUnmount(() => {
+  if (offCloseAsk) offCloseAsk();
 });
 
 watch(() => configStore.theme, syncAfterThemeChange);
@@ -62,6 +79,19 @@ watch(() => configStore.theme, syncAfterThemeChange);
     <div class="toast toast-end">
       <div v-if="toast.visible" :class="['alert', toast.type === 'success' ? 'alert-success' : 'alert-error']">
         <span>{{ toast.message }}</span>
+      </div>
+    </div>
+
+    <!-- 关闭确认框 -->
+    <div v-if="showClosePrompt" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40">
+      <div class="w-80 rounded-box bg-base-100 p-5 shadow-xl">
+        <h3 class="mb-2 text-base font-bold">{{ t('closePrompt.title') }}</h3>
+        <p class="mb-4 text-sm opacity-70">{{ t('closePrompt.message') }}</p>
+        <div class="flex justify-end gap-2">
+          <button class="btn btn-ghost btn-sm" @click="showClosePrompt = false">{{ t('closePrompt.cancel') }}</button>
+          <button class="btn btn-outline btn-sm" @click="resolveClose('quit')">{{ t('closePrompt.quit') }}</button>
+          <button class="btn btn-primary btn-sm" @click="resolveClose('tray')">{{ t('closePrompt.tray') }}</button>
+        </div>
       </div>
     </div>
   </div>

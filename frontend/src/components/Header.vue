@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { WindowMinimise, WindowToggleMaximise, Quit } from "../../wailsjs/runtime";
+import { WindowMinimise, Quit } from "../../wailsjs/runtime";
 import { useConfigStore, THEMES } from "../stores/config";
 
 const { t, availableLocales: languages, locale } = useI18n();
@@ -44,7 +44,6 @@ onMounted(() => document.addEventListener("click", closeMenus));
 onBeforeUnmount(() => document.removeEventListener("click", closeMenus));
 
 const minimise = () => WindowMinimise();
-const toggleMaximise = () => WindowToggleMaximise();
 const close = () => Quit();
 </script>
 
@@ -207,22 +206,6 @@ const close = () => Quit();
           stroke-linecap="round"
           stroke-linejoin="round">
           <path d="M5 12h14" />
-        </svg>
-      </button>
-      <button
-        class="flex w-11 items-center justify-center hover:bg-base-300"
-        :title="t('topbar.maximise')"
-        @click="toggleMaximise">
-        <svg
-          class="h-4 w-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <rect width="18" height="18" x="3" y="3" rx="2" />
         </svg>
       </button>
       <button

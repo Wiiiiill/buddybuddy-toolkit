@@ -18,6 +18,7 @@ const activeTab = ref("settings");
 const formats = ref([...configStore.supportedFormats]);
 const presets = ref(configStore.presets.map((p) => ({ ...p })));
 const compressMB = ref(configStore.compressTargetBytes / 1024 / 1024);
+const closeBehavior = ref(configStore.closeBehavior || "ask");
 const saved = ref(false);
 
 const addFormat = () => formats.value.push("");
@@ -37,6 +38,7 @@ const save = async () => {
     1,
     Math.round(compressMB.value * 1024 * 1024)
   );
+  configStore.closeBehavior = closeBehavior.value;
   await configStore.save();
   saved.value = true;
   setTimeout(() => (saved.value = false), 2000);
@@ -47,6 +49,7 @@ const resetToDefault = async () => {
   formats.value = [...configStore.supportedFormats];
   presets.value = configStore.presets.map((p) => ({ ...p }));
   compressMB.value = configStore.compressTargetBytes / 1024 / 1024;
+  closeBehavior.value = configStore.closeBehavior || "ask";
   locale.value = configStore.locale;
   showToast(t('settings.resetDone'));
 };
@@ -136,6 +139,16 @@ const scrollTo = (id) => {
             <span class="text-sm opacity-60">MB</span>
           </div>
           <div class="mt-1 text-xs opacity-50">{{ t('settings.compressTargetTip') }}</div>
+        </div>
+
+        <div class="mb-5">
+          <div class="mb-2 text-sm font-semibold">{{ t('settings.closeBehavior') }}</div>
+          <select v-model="closeBehavior" class="select select-bordered select-sm w-56">
+            <option value="ask">{{ t('settings.closeAsk') }}</option>
+            <option value="tray">{{ t('settings.closeTray') }}</option>
+            <option value="quit">{{ t('settings.closeQuit') }}</option>
+          </select>
+          <div class="mt-1 text-xs opacity-50">{{ t('settings.closeTip') }}</div>
         </div>
 
         <div class="flex items-center gap-2">

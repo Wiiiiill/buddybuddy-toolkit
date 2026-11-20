@@ -24,7 +24,8 @@ buddybuddy-toolkit is a small desktop utility built with [Wails](https://wails.i
 - **Archive by prefix** — Create subfolders from the part before the underscore and move files in
 - **Replace in filenames** — Find and replace a substring, with quick presets (e.g. `.jpg` → `_首图.jpg`)
 - **Image compression** — Compress JPG/PNG files larger than the target size (2 MB by default): JPEG via MozJPEG (WebAssembly), PNG via pngquant-style quantization; compressed files replace the originals
-- **Configurable** — Supported image formats, preset rules, and the compression target size are editable in Settings and persisted
+- **Tray & close behavior** — Close to the system tray or quit completely; asked on first close and changeable in Settings
+- **Configurable** — Supported image formats, preset rules, compression target size, and close behavior are editable in Settings and persisted
 - **Themes** — All 32 built-in daisyUI themes with color previews
 - **Bilingual** — Switch between English and Chinese at any time
 - **Feedback** — Shows how many files were actually processed
