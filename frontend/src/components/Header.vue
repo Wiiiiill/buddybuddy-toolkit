@@ -140,32 +140,34 @@ const close = () => Quit();
         </button>
         <div
           v-if="themeOpen"
-          class="absolute left-1/2 top-full z-50 mt-3 max-h-[60vh] w-60 -translate-x-1/2 overflow-y-auto rounded-box bg-base-200 p-2 shadow-xl">
-          <button
-            v-for="th in THEMES"
-            :key="th"
-            class="flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-base-300"
-            @click="selectTheme(th)">
-            <div :data-theme="th" class="bg-base-100 grid grid-cols-2 gap-0.5 rounded-md p-1 shadow-sm">
-              <div class="bg-base-content h-1 w-1 rounded-full"></div>
-              <div class="bg-primary h-1 w-1 rounded-full"></div>
-              <div class="bg-secondary h-1 w-1 rounded-full"></div>
-              <div class="bg-accent h-1 w-1 rounded-full"></div>
-            </div>
-            <span class="flex-1">{{ t('themes.' + th) }}</span>
-            <svg
-              v-if="configStore.theme === th"
-              class="h-3 w-3"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round">
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          </button>
+          class="absolute left-1/2 top-full z-50 mt-3 w-60 -translate-x-1/2 rounded-box bg-base-200 p-2 shadow-xl">
+          <div class="max-h-[60vh] overflow-y-auto">
+            <button
+              v-for="th in THEMES"
+              :key="th"
+              class="flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-base-300"
+              @click="selectTheme(th)">
+              <div :data-theme="th" class="bg-base-100 grid grid-cols-2 gap-0.5 rounded-md p-1 shadow-sm">
+                <div class="bg-base-content h-1 w-1 rounded-full"></div>
+                <div class="bg-primary h-1 w-1 rounded-full"></div>
+                <div class="bg-secondary h-1 w-1 rounded-full"></div>
+                <div class="bg-accent h-1 w-1 rounded-full"></div>
+              </div>
+              <span class="flex-1">{{ t('themes.' + th) }}</span>
+              <svg
+                v-if="configStore.theme === th"
+                class="h-3 w-3"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
