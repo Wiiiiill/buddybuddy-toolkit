@@ -14,12 +14,24 @@ export function GetConfig() {
   return window['go']['main']['App']['GetConfig']();
 }
 
+export function ListImageFiles(arg1) {
+  return window['go']['main']['App']['ListImageFiles'](arg1);
+}
+
 export function OpenFolder() {
   return window['go']['main']['App']['OpenFolder']();
 }
 
+export function ReadImageBase64(arg1) {
+  return window['go']['main']['App']['ReadImageBase64'](arg1);
+}
+
 export function ReplaceFilenames(arg1, arg2, arg3) {
   return window['go']['main']['App']['ReplaceFilenames'](arg1, arg2, arg3);
+}
+
+export function ReplaceImageBase64(arg1, arg2) {
+  return window['go']['main']['App']['ReplaceImageBase64'](arg1, arg2);
 }
 
 export function ResetConfig() {

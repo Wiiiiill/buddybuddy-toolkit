@@ -21,6 +21,7 @@ export namespace main {
 	    presets: Preset[];
 	    locale: string;
 	    theme: string;
+	    compressTargetBytes: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -32,6 +33,7 @@ export namespace main {
 	        this.presets = this.convertValues(source["presets"], Preset);
 	        this.locale = source["locale"];
 	        this.theme = source["theme"];
+	        this.compressTargetBytes = source["compressTargetBytes"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -51,6 +53,20 @@ export namespace main {
 		    }
 		    return a;
 		}
+	}
+	export class ImageFileInfo {
+	    name: string;
+	    size: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImageFileInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.size = source["size"];
+	    }
 	}
 
 }

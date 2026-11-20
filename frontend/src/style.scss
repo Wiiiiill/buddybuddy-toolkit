@@ -8,6 +8,14 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  /* 窗口本身透明，圆角以外区域才能看到桌面/系统背景 */
+  background: transparent;
+}
+
+/* daisyUI 会给 :root 铺主题底色，用同等优先级覆盖，否则四角会露出方形底色 */
+:root,
+html[data-theme] {
+  background-color: transparent;
 }
 
 body {
@@ -15,9 +23,17 @@ body {
   user-select: none;
 }
 
+/* 跨平台窗口外壳：把页面内容的四角裁成圆角 */
+.app-shell {
+  border-radius: var(--window-radius);
+  overflow: hidden;
+}
+
 /* 统一基础样式变量：倒角、动画、边框等不随主题变化，仅颜色随主题切换 */
 :root,
 [data-theme] {
+  /* Windows/Linux 窗口圆角，贴近 Windows 11 系统观感 */
+  --window-radius: 12px;
   --rounded-box: 1rem;
   --rounded-btn: 0.5rem;
   --rounded-badge: 1.9rem;
@@ -27,6 +43,11 @@ body {
   --border-btn: 1px;
   --tab-border: 1px;
   --tab-radius: 0.5rem;
+}
+
+/* macOS 系统窗口圆角约为 20px，跟随系统观感 */
+html[data-platform="darwin"] {
+  --window-radius: 20px;
 }
 
 input,

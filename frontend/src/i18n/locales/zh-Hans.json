@@ -12,11 +12,18 @@
     "ofnTip": "输入要查找的字符串",
     "nfnTip": "输入替换后的字符串",
     "fileBtn": "按前缀归档",
-    "fileOps": "文件整理",
-    "replaceTitle": "替换文件名",
+    "fileOps": "文件处理",
     "quick": "快捷",
     "needDir": "请先选择目录",
-    "doneCount": "已处理 {count} 个文件"
+    "doneCount": "已处理 {count} 个文件",
+    "compressTarget": "目标 {size} MB",
+    "compressBtn": "压缩大图",
+    "compressing": "压缩中…",
+    "compressNoFiles": "没有超过目标大小的图片",
+    "compressDone": "压缩完成：成功 {compressed} 张，跳过 {skipped} 张",
+    "compressBelowTarget": "{count} 张无法压到目标大小",
+    "compressFailed": "{count} 张失败",
+    "compressSummary": "已压缩 {compressed} 张，跳过 {skipped} 张"
   },
   "g": {
     "title": "好哥哥工具"
@@ -52,7 +59,9 @@
     "back": "返回",
     "saved": "已保存",
     "resetDefault": "恢复默认",
-    "resetDone": "已恢复默认设置"
+    "resetDone": "已恢复默认设置",
+    "compressTarget": "图片压缩目标大小",
+    "compressTargetTip": "超过该大小的 JPG/PNG 会被压缩，默认 2 MB"
   },
   "themes": {
     "light": "浅色",

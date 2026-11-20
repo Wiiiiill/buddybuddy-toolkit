@@ -1,22 +1,59 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, nextTick, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useConfigStore } from "./stores/config";
 import { toast } from "./stores/toast";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
+import { WindowSetBackgroundColour } from "../wailsjs/runtime";
 
 const { locale } = useI18n();
 const configStore = useConfigStore();
 
+// 让原生窗口底色跟随当前主题：
+// Windows 的无边框窗口在 CSS 圆角之外会露出窗口类背景色，
+// macOS 则需要窗口背景保持透明，四角裁切才能透出桌面。
+const syncWindowBackground = () => {
+  if (typeof window === "undefined" || !window.runtime?.WindowSetBackgroundColour) {
+    return;
+  }
+
+  const shell = document.querySelector(".app-shell");
+  // Windows 的窗口底色只会从四角露出，四角紧邻 Header/Footer（base-200），
+  // 取它们的底色可以避免在系统圆角与 CSS 圆角之间出现一圈异色
+  const source = document.querySelector(".app-shell > header") || shell;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!source || !ctx) return;
+
+  // daisyUI 4 主题色是 oklch，借助 canvas 转成 sRGB 整数；
+  // 先填白色兜底，避免旧内核不认识 oklch 时把原生底色刷成黑色
+  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = getComputedStyle(source).backgroundColor;
+  ctx.fillRect(0, 0, 1, 1);
+  const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+  if (a === 0) return;
+
+  // 原生背景取主题底色但保持全透明
+  WindowSetBackgroundColour(r, g, b, 0);
+};
+
+const syncAfterThemeChange = async () => {
+  await nextTick();
+  syncWindowBackground();
+};
+
 onMounted(async () => {
   await configStore.load();
   locale.value = configStore.locale;
+  syncAfterThemeChange();
 });
+
+watch(() => configStore.theme, syncAfterThemeChange);
 </script>
 
 <template>
-  <div class="flex h-full flex-col bg-base-100 text-base-content">
+  <div class="app-shell flex h-full flex-col bg-base-100 text-base-content">
     <Header />
     <main class="flex-1 overflow-hidden">
       <router-view />

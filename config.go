@@ -19,6 +19,8 @@ type Config struct {
 	Presets          []Preset `json:"presets"`
 	Locale           string   `json:"locale"`
 	Theme            string   `json:"theme"`
+	// CompressTargetBytes 图片压缩的目标大小（字节），默认 2 MiB
+	CompressTargetBytes int64 `json:"compressTargetBytes"`
 }
 
 // defaultConfig 返回默认配置
@@ -28,8 +30,9 @@ func defaultConfig() Config {
 		Presets: []Preset{
 			{Name: "首图", Before: ".jpg", After: "_首图.jpg"},
 		},
-		Locale: "zh-Hans",
-		Theme:  "light",
+		Locale:              "zh-Hans",
+		Theme:               "light",
+		CompressTargetBytes: 2 * 1024 * 1024,
 	}
 }
 
@@ -51,6 +54,10 @@ func loadConfig() Config {
 	}
 	if err := json.Unmarshal(data, &cfg); err != nil {
 		return defaultConfig()
+	}
+	// 旧版配置文件没有该字段，回退到默认目标大小
+	if cfg.CompressTargetBytes <= 0 {
+		cfg.CompressTargetBytes = defaultConfig().CompressTargetBytes
 	}
 	return cfg
 }

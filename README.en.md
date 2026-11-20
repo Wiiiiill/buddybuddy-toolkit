@@ -16,14 +16,15 @@ A desktop tool for batch-processing image filenames
 
 ## Introduction
 
-buddybuddy-toolkit is a small desktop utility built with [Wails](https://wails.io) for batch-processing image filenames. Pick a folder and it can decode garbled filenames, archive files by prefix, and replace strings in filenames.
+buddybuddy-toolkit is a small desktop utility built with [Wails](https://wails.io) for batch-processing image filenames and shrinking oversized images. Pick a folder and it can decode garbled filenames, archive files by prefix, replace strings in filenames, and compress large JPG/PNG files down to a target size.
 
 ## Features
 
 - **Decode filenames** — Restore URL-encoded filenames (e.g. `%E4%B8%AD.jpg`) to readable text
 - **Archive by prefix** — Create subfolders from the part before the underscore and move files in
 - **Replace in filenames** — Find and replace a substring, with quick presets (e.g. `.jpg` → `_首图.jpg`)
-- **Configurable** — Supported image formats and preset rules are editable in Settings and persisted
+- **Image compression** — Compress JPG/PNG files larger than the target size (2 MB by default): JPEG via MozJPEG (WebAssembly), PNG via pngquant-style quantization; compressed files replace the originals
+- **Configurable** — Supported image formats, preset rules, and the compression target size are editable in Settings and persisted
 - **Themes** — All 32 built-in daisyUI themes with color previews
 - **Bilingual** — Switch between English and Chinese at any time
 - **Feedback** — Shows how many files were actually processed
@@ -72,6 +73,7 @@ Output goes to `build/bin/`. The repository is set up with GitHub Actions: pushi
 | --- | --- |
 | Backend | Go, Wails v2 |
 | Frontend | Vue 3, TypeScript, Vite, Pinia, Vue Router, Vue I18n |
+| Image codecs | MozJPEG (WebAssembly), pngquant-style quantization (UPNG) |
 | Styling | TailwindCSS, daisyUI |
 
 ## Configuration file

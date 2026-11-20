@@ -8,9 +8,15 @@ export function DecodeFilenames(arg1:string):Promise<number>;
 
 export function GetConfig():Promise<main.Config>;
 
+export function ListImageFiles(arg1:string):Promise<Array<main.ImageFileInfo>>;
+
 export function OpenFolder():Promise<string>;
 
+export function ReadImageBase64(arg1:string):Promise<string>;
+
 export function ReplaceFilenames(arg1:string,arg2:string,arg3:string):Promise<number>;
+
+export function ReplaceImageBase64(arg1:string,arg2:string):Promise<number>;
 
 export function ResetConfig():Promise<main.Config>;
 

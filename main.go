@@ -3,6 +3,7 @@ package main
 import (
 	"embed"
 	"log"
+	"mime"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
@@ -44,6 +45,9 @@ var icon []byte
 //
 // }
 func main() {
+	// 图片压缩用的 wasm 模块需要正确的 MIME 类型
+	_ = mime.AddExtensionType(".wasm", "application/wasm")
+
 	// Create an instance of the app structure
 	// 创建一个App结构体实例
 	app := NewApp()
@@ -84,12 +88,14 @@ func main() {
 		// Windows平台特定选项
 		Windows: &windows.Options{
 			WebviewIsTransparent:              true,
-			WindowIsTranslucent:               false,
+			// 让 Windows 窗口真正透明，CSS 的 12px 圆角才能完整显示，与 macOS 一致
+			WindowIsTranslucent:               true,
 			DisableWindowIcon:                 false,
 			DisableFramelessWindowDecorations: false,
 			WebviewUserDataPath:               "",
 			WebviewBrowserPath:                "",
 			Theme:                             windows.SystemDefault,
+			BackdropType:                      windows.None,
 		},
 		// Mac platform specific options
 		// Mac平台特定选项

@@ -12,11 +12,18 @@
     "ofnTip": "Enter string to find",
     "nfnTip": "Enter replacement string",
     "fileBtn": "Archive by prefix",
-    "fileOps": "File operations",
-    "replaceTitle": "Replace filename",
+    "fileOps": "File processing",
     "quick": "Quick",
     "needDir": "Select a folder first",
-    "doneCount": "Processed {count} files"
+    "doneCount": "Processed {count} files",
+    "compressTarget": "Target {size} MB",
+    "compressBtn": "Compress large images",
+    "compressing": "Compressing…",
+    "compressNoFiles": "No images exceed the target size",
+    "compressDone": "Compression finished: {compressed} compressed, {skipped} skipped",
+    "compressBelowTarget": "{count} could not reach the target size",
+    "compressFailed": "{count} failed",
+    "compressSummary": "{compressed} compressed, {skipped} skipped"
   },
   "g": {
     "title": "buddybuddy-toolkit"
@@ -52,7 +59,9 @@
     "back": "Back",
     "saved": "Saved",
     "resetDefault": "Reset to default",
-    "resetDone": "Reset to default settings"
+    "resetDone": "Reset to default settings",
+    "compressTarget": "Image compression target size",
+    "compressTargetTip": "JPG/PNG files larger than this will be compressed. Default 2 MB."
   },
   "themes": {
     "light": "light",

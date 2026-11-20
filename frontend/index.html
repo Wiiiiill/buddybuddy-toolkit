@@ -5,6 +5,12 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>buddybuddy-toolkit</title>
+    <script>
+      // 首屏渲染前标记平台：macOS 使用更大的窗口圆角（贴近系统窗口）
+      document.documentElement.dataset.platform = /Mac/i.test(navigator.userAgent)
+        ? "darwin"
+        : "win32";
+    </script>
   </head>
   <body>
     <div id="app"></div>

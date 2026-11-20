@@ -17,6 +17,7 @@ const activeTab = ref("settings");
 // 本地编辑副本（进入页面时从 store 拷贝）
 const formats = ref([...configStore.supportedFormats]);
 const presets = ref(configStore.presets.map((p) => ({ ...p })));
+const compressMB = ref(configStore.compressTargetBytes / 1024 / 1024);
 const saved = ref(false);
 
 const addFormat = () => formats.value.push("");
@@ -32,6 +33,10 @@ const save = async () => {
   configStore.presets = presets.value
     .filter((p) => p.before.trim() !== "" && p.after.trim() !== "")
     .map((p) => ({ name: p.name, before: p.before, after: p.after }));
+  configStore.compressTargetBytes = Math.max(
+    1,
+    Math.round(compressMB.value * 1024 * 1024)
+  );
   await configStore.save();
   saved.value = true;
   setTimeout(() => (saved.value = false), 2000);
@@ -41,6 +46,7 @@ const resetToDefault = async () => {
   await configStore.reset();
   formats.value = [...configStore.supportedFormats];
   presets.value = configStore.presets.map((p) => ({ ...p }));
+  compressMB.value = configStore.compressTargetBytes / 1024 / 1024;
   locale.value = configStore.locale;
   showToast(t('settings.resetDone'));
 };
@@ -120,6 +126,16 @@ const scrollTo = (id) => {
             <button class="btn btn-ghost btn-sm" @click="removePreset(i)">✕</button>
           </div>
           <button class="btn btn-outline btn-sm" @click="addPreset">+ {{ t('settings.addPreset') }}</button>
+        </div>
+
+        <div class="mb-5">
+          <div class="mb-2 text-sm font-semibold">{{ t('settings.compressTarget') }}</div>
+          <div class="flex items-center gap-2">
+            <input type="number" min="0.1" step="0.1" v-model.number="compressMB"
+              class="input input-bordered input-sm w-28" />
+            <span class="text-sm opacity-60">MB</span>
+          </div>
+          <div class="mt-1 text-xs opacity-50">{{ t('settings.compressTargetTip') }}</div>
         </div>
 
         <div class="flex items-center gap-2">
