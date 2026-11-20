@@ -84,6 +84,13 @@ func main() {
 		Bind: []any{
 			app,
 		},
+		// 单例：再次启动时激活已有窗口，而不是开第二个实例
+		SingleInstanceLock: &options.SingleInstanceLock{
+			UniqueId: "com.wiiiiill.buddybuddy-toolkit",
+			OnSecondInstanceLaunch: func(data options.SecondInstanceData) {
+				app.showMainWindow()
+			},
+		},
 		// Windows platform specific options
 		// Windows平台特定选项
 		Windows: &windows.Options{

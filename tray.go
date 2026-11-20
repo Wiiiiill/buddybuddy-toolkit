@@ -3,9 +3,7 @@ package main
 import (
 	"context"
 	_ "embed"
-	stdruntime "runtime"
 
-	"github.com/energye/systray"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -15,53 +13,25 @@ var trayIconPNG []byte
 //go:embed build/windows/icon.ico
 var trayIconICO []byte
 
-// runTray 启动系统托盘，在独立 goroutine 中运行
-func (a *App) runTray() {
-	systray.Run(a.onTrayReady, func() {})
+// showMainWindow 从托盘恢复主窗口
+func (a *App) showMainWindow() {
+	runtime.WindowShow(a.ctx)
+	runtime.WindowUnminimise(a.ctx)
 }
 
-func (a *App) onTrayReady() {
-	systray.SetTooltip("buddybuddy-toolkit")
-	if stdruntime.GOOS == "windows" {
-		systray.SetIcon(trayIconICO)
-	} else {
-		systray.SetIcon(trayIconPNG)
-	}
-
-	showWindow := func() {
-		runtime.WindowShow(a.ctx)
-		runtime.WindowUnminimise(a.ctx)
-	}
-
-	// Windows：左键单击/双击恢复窗口，右键弹出菜单
-	// macOS 保持菜单栏图标的默认行为（点击显示菜单）
-	if stdruntime.GOOS == "windows" {
-		systray.SetOnClick(func(menu systray.IMenu) { showWindow() })
-		systray.SetOnDClick(func(menu systray.IMenu) { showWindow() })
-		systray.SetOnRClick(func(menu systray.IMenu) { _ = menu.ShowMenu() })
-	}
-
-	showText, quitText := "显示主窗口", "退出"
+// trayTexts 返回托盘菜单文案
+func (a *App) trayTexts() (show, quit string) {
 	if a.config.Locale == "en" {
-		showText, quitText = "Show window", "Quit"
+		return "Show window", "Quit"
 	}
-
-	showItem := systray.AddMenuItem(showText, "")
-	systray.AddSeparator()
-	quitItem := systray.AddMenuItem(quitText, "")
-
-	showItem.Click(showWindow)
-	quitItem.Click(func() {
-		a.quitting = true
-		a.stopTray()
-		runtime.Quit(a.ctx)
-	})
+	return "显示主窗口", "退出"
 }
 
-// stopTray 停止托盘；未初始化或重复调用时忽略错误
-func (a *App) stopTray() {
-	defer func() { _ = recover() }()
-	systray.Quit()
+// quitFromTray 从托盘菜单退出应用
+func (a *App) quitFromTray() {
+	a.quitting = true
+	a.stopTray()
+	runtime.Quit(a.ctx)
 }
 
 // beforeClose 处理关闭按钮：按配置隐藏到托盘或退出，首次关闭时询问
