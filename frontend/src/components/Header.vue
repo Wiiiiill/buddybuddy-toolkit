@@ -15,6 +15,10 @@ const onclickLanguageHandle = (item) => {
     locale.value = item;
     localStorage.setItem("locale", item);
   }
+  // 选择后关闭下拉菜单
+  if (document.activeElement) {
+    document.activeElement.blur();
+  }
 };
 
 const minimise = () => WindowMinimise();
@@ -24,25 +28,44 @@ const close = () => Quit();
 
 <template>
   <header
-    class="draggable flex h-12 items-center justify-between border-b border-base-300 bg-base-200 select-none">
-    <!-- 标题 -->
+    class="draggable relative flex h-12 items-center border-b border-base-300 bg-base-200 select-none">
+    <!-- 标题（左） -->
     <div class="px-3 font-bold">{{ t('g.title') }}</div>
 
-    <!-- 语言 + 主题切换 -->
-    <div class="no-drag flex flex-1 items-center justify-center gap-4">
-      <div class="flex items-center gap-1 text-sm">
-        <template v-for="(item, index) in [...languages]" :key="item">
-          <span
-            :class="[
-              item === locale
-                ? 'font-bold text-primary'
-                : 'cursor-pointer opacity-60 hover:opacity-100',
-            ]"
-            @click="onclickLanguageHandle(item)">
-            {{ t('languages.' + item) }}
-          </span>
-          <span v-if="index < [...languages].length - 1" class="text-base-300">|</span>
-        </template>
+    <!-- 语言 + 主题切换（绝对居中，位置固定） -->
+    <div
+      class="no-drag absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1">
+      <!-- 语言切换（地球图标 + 下拉菜单） -->
+      <div class="dropdown dropdown-bottom dropdown-center">
+        <button
+          tabindex="0"
+          class="btn btn-ghost btn-circle btn-sm"
+          :title="t('topbar.language')">
+          <svg
+            class="h-5 w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+            <path d="M2 12h20" />
+          </svg>
+        </button>
+        <ul
+          tabindex="0"
+          class="dropdown-content menu z-50 w-32 gap-1 rounded-box bg-base-200 p-2 shadow">
+          <li v-for="item in [...languages]" :key="item">
+            <button
+              :class="item === locale ? 'active' : ''"
+              @click="onclickLanguageHandle(item)">
+              {{ t('languages.' + item) }}
+            </button>
+          </li>
+        </ul>
       </div>
 
       <!-- 主题切换开关 -->
@@ -86,8 +109,8 @@ const close = () => Quit();
       </label>
     </div>
 
-    <!-- 窗口控制 -->
-    <div class="no-drag flex h-full items-stretch">
+    <!-- 窗口控制（右） -->
+    <div class="no-drag ml-auto flex h-full items-stretch">
       <button
         class="flex w-11 items-center justify-center hover:bg-base-300"
         :title="t('topbar.minimise')"

@@ -20,55 +20,52 @@ function copyFilesBasedOnPrefix(){
 function replaceFilenames(){
   ReplaceFilenames(path.value,originFilename.value,replaceFilename.value)
 }
-
 function setUpAttr(){
   ReplaceFilenames(path.value,"_1.","_属性.")
 }
 
 </script>
 <template>
-  <div class="p-[24px]">
-    <h1 class="mb-4 text-lg font-semibold">
-      {{ t('main.title') }}
-    </h1>
-    <div class="flex items-center gap-[6px]">
+  <div class="flex h-full flex-col justify-center p-5">
+    <div class="mb-3 flex items-center gap-2">
+      <h1 class="text-base font-semibold">
+        {{ t('main.title') }}
+      </h1>
+      <span class="text-xs opacity-60"><span class="text-red-600">*</span>{{ t('main.support-formats') }}</span>
+    </div>
+
+    <!-- 第一行：目录 + 操作按钮 -->
+    <div class="flex items-end gap-2">
       <label class="form-control w-full max-w-xs">
-        <div class="label">
+        <div class="label py-1">
           <span class="label-text">{{ t('main.directory') }}:</span>
         </div>
         <input type="text" v-model="path" :placeholder="t('main.folderTip')"
-          class="input input-bordered w-full max-w-xs" />
-        <div class="label">
-          <span class="label-text-alt"><span class="text-red-600">*</span>{{ t('main.support-formats') }}</span>
-        </div>
+          class="input input-bordered input-sm w-full max-w-xs" />
       </label>
-      <button class="btn " @click="openFolder">{{ t('main.FolderBtn') }}</button>
-      <button class="btn" :disabled="!path" @click="decodeFilenames">{{ t('main.decodeBtn') }}</button>
-      <button class="btn" :disabled="!path" @click="copyFilesBasedOnPrefix">{{ t('main.fileBtn') }}</button>
-      <button class="btn" :disabled="!path" @click="setUpAttr">{{ t('main.setUpAttrBtn') }}</button>
+      <button class="btn btn-sm" @click="openFolder">{{ t('main.FolderBtn') }}</button>
+      <button class="btn btn-sm" :disabled="!path" @click="decodeFilenames">{{ t('main.decodeBtn') }}</button>
+      <button class="btn btn-sm" :disabled="!path" @click="copyFilesBasedOnPrefix">{{ t('main.fileBtn') }}</button>
+      <button class="btn btn-sm" :disabled="!path" @click="setUpAttr">{{ t('main.setUpAttrBtn') }}</button>
     </div>
-    <div class="flex items-center gap-[6px]">
+
+    <!-- 第二行：替换文件名 -->
+    <div class="mt-3 flex items-end gap-2">
       <label class="form-control w-full max-w-xs">
-        <div class="label">
+        <div class="label py-1">
           <span class="label-text">{{ t('main.ofn') }}:</span>
         </div>
         <input type="text" v-model="originFilename" :placeholder="t('main.ofnTip')"
-          class="input input-bordered w-full max-w-xs" />
-        <div class="label">
-          <span class="label-text-alt">&nbsp;</span>
-        </div>
+          class="input input-bordered input-sm w-full max-w-xs" />
       </label>
       <label class="form-control w-full max-w-xs">
-        <div class="label">
+        <div class="label py-1">
           <span class="label-text">{{ t('main.nfn') }}:</span>
         </div>
         <input type="text" v-model="replaceFilename" :placeholder="t('main.nfnTip')"
-          class="input input-bordered w-full max-w-xs" />
-        <div class="label">
-          <span class="label-text-alt">&nbsp;</span>
-        </div>
+          class="input input-bordered input-sm w-full max-w-xs" />
       </label>
-      <button @click="replaceFilenames" class="btn" :disabled="!path || !originFilename || !replaceFilename">{{ t('main.replaceBtn') }}</button>
+      <button @click="replaceFilenames" class="btn btn-sm" :disabled="!path || !originFilename || !replaceFilename">{{ t('main.replaceBtn') }}</button>
     </div>
   </div>
 </template>

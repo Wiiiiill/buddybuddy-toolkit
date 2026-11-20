@@ -11,7 +11,7 @@ onMounted(() => themeStore.init());
 <template>
   <div class="flex h-full flex-col bg-base-100 text-base-content">
     <Header />
-    <main class="flex-1 overflow-auto">
+    <main class="flex-1 overflow-hidden">
       <router-view />
     </main>
     <Footer />

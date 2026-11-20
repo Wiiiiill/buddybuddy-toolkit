@@ -29,7 +29,8 @@
     "minimise": "Minimise",
     "maximise": "Maximise",
     "close": "Close",
-    "toggleTheme": "Toggle theme"
+    "toggleTheme": "Toggle theme",
+    "language": "Switch language"
   },
   "aboutpage": {
     "title": "Wails Template Vue",
