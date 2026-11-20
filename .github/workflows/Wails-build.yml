@@ -24,7 +24,7 @@ jobs:
           - os: macos-latest
             platform: darwin/universal
             tags: ""
-            flags: "-pkg"
+            flags: ""
             package_name: buddybuddy-toolkit-macos-universal
           - os: ubuntu-latest
             platform: linux/amd64
@@ -57,6 +57,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev
 
+      - name: Install NSIS
+        if: runner.os == 'Windows'
+        run: choco install nsis -y --no-progress
+
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
 
@@ -67,15 +71,18 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Compress-Archive -Path build/bin/buddybuddy-toolkit.exe -DestinationPath buddybuddy-toolkit-windows-amd64.zip
+          if (-not (Get-ChildItem build/bin/*-installer.exe -ErrorAction SilentlyContinue)) {
+            throw "NSIS installer was not generated"
+          }
           Copy-Item build/bin/*-installer.exe ./buddybuddy-toolkit-amd64-installer.exe
+          Compress-Archive -Path build/bin/buddybuddy-toolkit.exe -DestinationPath buddybuddy-toolkit-windows-amd64.zip
 
       - name: Package (macOS)
         if: runner.os == 'macOS'
         run: |
           cd build/bin
           zip -r -y ../../buddybuddy-toolkit-macos-universal.zip buddybuddy-toolkit.app
-          cp *.pkg ../../buddybuddy-toolkit.pkg
+          productbuild --component buddybuddy-toolkit.app /Applications ../../buddybuddy-toolkit.pkg
 
       - name: Package (Linux)
         if: runner.os == 'Linux'
