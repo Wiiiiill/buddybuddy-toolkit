@@ -1,62 +1,46 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+本项目所有值得记录的变更都会写在这里。
 
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+格式参考 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，
+版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
 ## [Unreleased]
 
-## [v2.0.0-beta.8] - 2022-05-06
+## [1.1.0] - 2026-11-20
 
 ### Added
 
-- Add issue stale bots by [@misitebao](https://github.com/misitebao)
+- 支持 daisyUI 全部 32 个内置主题，可在设置页选择并预览主题配色
+- 新增设置页（常规设置 / 主题 / 关于），支持配置支持的图片格式与预填充替换规则
+- 配置持久化到用户配置目录 `config.json`（格式、规则、语言、主题）
+- 新增「恢复默认」，一键还原所有设置
+- 新增前端 toast 提示，替代系统弹窗
+- 按前缀归档、解码文件名、替换文件名等操作完成后显示处理文件数
 
 ### Changed
 
-- Switch to the form template by [@misitebao](https://github.com/misitebao)
-- Upgrade the front-end development method in dev mode by [@daoif](https://github.com/daoif)
-
-## [v2.0.0-beta.7] - 2022-03-23
-
-### Added
-
-- Optimize the basic template of the front-end project page by [@misitebao](https://github.com/misitebao)
-- `Typescript` templates add internationalization support by [@misitebao](https://github.com/misitebao)
-
-### Changed
-
-- Replaced `Javascript` template `vue-i18n` with `composition-api` by [@misitebao](https://github.com/misitebao)
-
-## [v2.0.0-beta.6] - 2022-03-16
-
-### Changed
-
-- Upgrade `vite` and `vue` to the latest version ([vite@2.8.6](https://github.com/vitejs/vite/releases/tag/v2.8.6), [vue@3.2.31](https://github.com/vuejs/core/releases/tag/v3.2.31)) by [@misitebao](https://github.com/misitebao)
+- Wails 升级至 v2.17.1
+- 去掉原生标题栏，改用自定义标题栏（可拖拽、最小化 / 最大化 / 关闭、主题与语言切换）
+- 主界面改为目录在上、操作区在下，未选目录时操作区置灰
+- 语言切换改为地球图标下拉，显示语言代码与全名
+- 窗口固定为 900×640，禁止调整大小
+- 全局文字不可选中（输入框除外），统一主题基础样式（倒角、动画不随主题变化）
 
 ### Fixed
 
-- Fix mac window border display problem by [@misitebao](https://github.com/misitebao)
+- 修复文件名无下划线时按前缀归档会崩溃的问题
+- 修复图片后缀大小写敏感导致 `.JPG`、`.PNG` 被忽略的问题
+- 修复解码无变化的文件名时重命名到自身报错的问题
+- 修复替换内容为空时的异常行为
+- 修复主题下拉滚动时选项贴边的问题
 
-## [v2.0.0-beta.5] - 2022-03-06
+## [1.0.1]
 
-### Added
+### Fixed
 
-- Add `frontend:dev:watcher` by [@misitebao](https://github.com/misitebao), corresponding to wails cli version is [v2.0.0-beta.33](https://github.com/wailsapp/wails/releases/tag/v2.0.0-beta.33)
+- 修复 macOS 上颜色显示不正确的问题
 
-## [v2.0.0-beta.4] - 2022-02-23
+## [1.0.0]
 
-### Added
-
-- Add typescript template option by [@misitebao](https://github.com/misitebao)
-
-### Changed
-
-- Modify window size by [@eighteenzheng](https://github.com/eighteenzheng)
-
-[unreleased]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.8...HEAD
-[v2.0.0-beta.8]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.7...v2.0.0-beta.8
-[v2.0.0-beta.7]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.6...v2.0.0-beta.7
-[v2.0.0-beta.6]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.5...v2.0.0-beta.6
-[v2.0.0-beta.5]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.4...v2.0.0-beta.5
-[v2.0.0-beta.4]: https://github.com/misitebao/wails-template-vue/compare/v2.0.0-beta.3...v2.0.0-beta.4
+- 初始版本
