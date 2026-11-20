@@ -4,6 +4,7 @@ import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useConfigStore, THEMES } from "../stores/config";
 import { showToast } from "../stores/toast";
+import { BrowserOpenURL } from "../../wailsjs/runtime";
 
 const { t, locale, availableLocales: languages } = useI18n();
 const router = useRouter();
@@ -172,11 +173,15 @@ const scrollTo = (id) => {
         <p class="mb-2 text-sm opacity-80">{{ t('about.intro') }}</p>
         <p class="mb-4 text-sm">
           <span class="opacity-60">{{ t('about.author') }}:</span>
-          <span class="font-semibold">github.com/Wiiiiill</span>
+          <a
+            class="link cursor-pointer font-semibold"
+            @click="BrowserOpenURL('https://wiiiiill.github.io/')">Wiiiiill</a>
         </p>
         <p class="text-sm">
           <span class="opacity-60">{{ t('about.repo') }}:</span>
-          <a class="link" href="https://github.com/Wiiiiill" target="_blank">github.com/Wiiiiill</a>
+          <a
+            class="link cursor-pointer"
+            @click="BrowserOpenURL('https://github.com/Wiiiiill/buddybuddy-toolkit')">buddybuddy-toolkit</a>
         </p>
       </section>
     </div>
