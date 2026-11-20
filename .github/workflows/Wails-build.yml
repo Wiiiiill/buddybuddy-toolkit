@@ -19,15 +19,18 @@ jobs:
           - os: windows-latest
             platform: windows/amd64
             tags: ""
-            archive: buddybuddy-toolkit-windows-amd64.zip
+            flags: "-nsis"
+            package_name: buddybuddy-toolkit-windows-amd64
           - os: macos-latest
             platform: darwin/universal
             tags: ""
-            archive: buddybuddy-toolkit-macos-universal.zip
+            flags: "-pkg"
+            package_name: buddybuddy-toolkit-macos-universal
           - os: ubuntu-latest
             platform: linux/amd64
             tags: webkit2_41
-            archive: buddybuddy-toolkit-linux-amd64.tar.gz
+            flags: ""
+            package_name: buddybuddy-toolkit-linux-amd64
 
     runs-on: ${{ matrix.os }}
 
@@ -58,35 +61,46 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.17.1
 
       - name: Build
-        run: wails build -clean -platform ${{ matrix.platform }} ${{ matrix.tags && format('-tags {0}', matrix.tags) || '' }}
+        run: wails build -clean -platform ${{ matrix.platform }} ${{ matrix.flags }} ${{ matrix.tags && format('-tags {0}', matrix.tags) || '' }}
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path build/bin/buddybuddy-toolkit.exe -DestinationPath ${{ matrix.archive }}
+        run: |
+          Compress-Archive -Path build/bin/buddybuddy-toolkit.exe -DestinationPath buddybuddy-toolkit-windows-amd64.zip
+          Copy-Item build/bin/*-installer.exe ./buddybuddy-toolkit-amd64-installer.exe
 
       - name: Package (macOS)
         if: runner.os == 'macOS'
         run: |
           cd build/bin
-          zip -r -y "../../${{ matrix.archive }}" buddybuddy-toolkit.app
+          zip -r -y ../../buddybuddy-toolkit-macos-universal.zip buddybuddy-toolkit.app
+          cp *.pkg ../../buddybuddy-toolkit.pkg
 
       - name: Package (Linux)
         if: runner.os == 'Linux'
         run: |
           cd build/bin
-          tar -czf "../../${{ matrix.archive }}" buddybuddy-toolkit
+          tar -czf ../../buddybuddy-toolkit-linux-amd64.tar.gz buddybuddy-toolkit
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.archive }}
-          path: ${{ matrix.archive }}
+          name: ${{ matrix.package_name }}
+          path: |
+            *.zip
+            *.pkg
+            *.exe
+            *.tar.gz
           if-no-files-found: error
 
       - name: Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ matrix.archive }}
+          files: |
+            *.zip
+            *.pkg
+            *.exe
+            *.tar.gz
           generate_release_notes: true
