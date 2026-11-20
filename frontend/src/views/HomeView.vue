@@ -39,7 +39,7 @@ function fillPreset(p) {
 <template>
   <div class="flex h-full flex-col justify-center gap-3 p-5">
     <!-- ① 目录（前提） -->
-    <div class="rounded-box border border-base-300 p-4">
+    <div class="rounded-box border border-base-content/20 p-4">
       <div class="mb-3 text-xs font-bold uppercase tracking-wide opacity-60">{{ t('main.directory') }}</div>
       <div class="flex items-center gap-2">
         <input type="text" v-model="path" :placeholder="t('main.folderTip')"
@@ -54,7 +54,7 @@ function fillPreset(p) {
 
     <!-- ② 操作区（依赖目录，未选目录时置灰禁用） -->
     <div :class="['flex flex-col gap-3', !path && 'pointer-events-none opacity-40']">
-      <div class="rounded-box border border-base-300 p-4">
+      <div class="rounded-box border border-base-content/20 p-4">
         <div class="mb-3 text-xs font-bold uppercase tracking-wide opacity-60">{{ t('main.fileOps') }}</div>
         <div class="flex items-center gap-2">
           <button class="btn btn-sm" @click="decodeFilenames">{{ t('main.decodeBtn') }}</button>
@@ -62,7 +62,7 @@ function fillPreset(p) {
         </div>
       </div>
 
-      <div class="rounded-box border border-base-300 p-4">
+      <div class="rounded-box border border-base-content/20 p-4">
         <div class="mb-3 text-xs font-bold uppercase tracking-wide opacity-60">{{ t('main.replaceTitle') }}</div>
         <div v-if="configStore.presets.length" class="mb-3 flex flex-wrap items-center gap-2">
           <span class="text-xs opacity-60">{{ t('main.quick') }}</span>

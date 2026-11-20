@@ -5,9 +5,11 @@ import { useRouter } from "vue-router";
 import { useConfigStore, THEMES } from "../stores/config";
 import { showToast } from "../stores/toast";
 
-const { t, locale } = useI18n();
+const { t, locale, availableLocales: languages } = useI18n();
 const router = useRouter();
 const configStore = useConfigStore();
+
+const localeCodes = { "en": "EN", "zh-Hans": "ZH" };
 
 const activeTab = ref("settings");
 
@@ -40,6 +42,11 @@ const resetToDefault = async () => {
   presets.value = configStore.presets.map((p) => ({ ...p }));
   locale.value = configStore.locale;
   showToast(t('settings.resetDone'));
+};
+
+const setLocale = (item) => {
+  locale.value = item;
+  configStore.setLocale(item);
 };
 
 // 左侧导航点击 → 滚动到对应区域
@@ -79,6 +86,20 @@ const scrollTo = (id) => {
     <div class="flex-1 overflow-auto px-6 py-8 scroll-pt-8">
       <section id="settings-section" class="mb-16">
         <h2 class="mb-4 text-lg font-bold">{{ t('settings.title') }}</h2>
+
+        <div class="mb-5">
+          <div class="mb-2 text-sm font-semibold">{{ t('settings.language') }}</div>
+          <div class="flex gap-2">
+            <button
+              v-for="item in [...languages]"
+              :key="item"
+              :class="['btn btn-sm gap-2', locale === item ? 'btn-primary' : 'btn-outline']"
+              @click="setLocale(item)">
+              <span class="font-mono text-xs font-bold opacity-60">{{ localeCodes[item] }}</span>
+              <span>{{ t('languages.' + item) }}</span>
+            </button>
+          </div>
+        </div>
 
         <div class="mb-5">
           <div class="mb-2 text-sm font-semibold">{{ t('settings.formats') }}</div>

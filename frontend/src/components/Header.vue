@@ -58,13 +58,13 @@ const close = () => Quit();
     <div
       class="no-drag absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1">
       <!-- 语言切换 -->
-      <div class="relative" @click.stop>
+      <div class="relative flex h-8 items-center" @click.stop>
         <button
-          class="btn btn-ghost btn-sm gap-1"
+          class="btn btn-ghost btn-sm h-8 gap-1.5"
           :title="t('topbar.language')"
           @click="toggleLangMenu">
           <svg
-            class="h-4 w-4 opacity-70"
+            class="h-5 w-5 opacity-70"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -90,26 +90,37 @@ const close = () => Quit();
         </button>
         <div
           v-if="langOpen"
-          class="absolute left-1/2 top-full z-50 mt-2 flex w-40 -translate-x-1/2 flex-col gap-1 rounded-box bg-base-200 p-2 shadow-xl">
+          class="absolute left-1/2 top-full z-50 mt-3 w-40 -translate-x-1/2 rounded-box bg-base-200 p-2 shadow-xl">
           <button
             v-for="item in [...languages]"
             :key="item"
-            class="flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-base-300"
-            :class="item === locale ? 'font-bold text-primary' : ''"
+            class="flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-base-300"
             @click="onclickLanguageHandle(item)">
-            <span class="font-mono text-xs font-bold opacity-40">{{ localeCodes[item] }}</span>
-            <span>{{ t('languages.' + item) }}</span>
+            <span class="rounded-md bg-base-100 p-1 font-mono text-xs font-bold opacity-60 shadow-sm">{{ localeCodes[item] }}</span>
+            <span class="flex-1">{{ t('languages.' + item) }}</span>
+            <svg
+              v-if="item === locale"
+              class="h-3 w-3"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
           </button>
         </div>
       </div>
 
       <!-- 主题切换 -->
-      <div class="relative" @click.stop>
+      <div class="relative flex h-8 items-center" @click.stop>
         <button
-          class="btn btn-ghost btn-sm gap-1.5"
+          class="btn btn-ghost btn-sm h-8 gap-1.5"
           :title="t('topbar.toggleTheme')"
           @click="toggleThemeMenu">
-          <div class="grid grid-cols-2 gap-0.5 rounded-md border border-base-content/10 p-1">
+          <div class="grid h-5 w-5 shrink-0 grid-cols-2 gap-0.5 rounded-md border border-base-content/10 p-1">
             <div class="bg-base-content h-1 w-1 rounded-full"></div>
             <div class="bg-primary h-1 w-1 rounded-full"></div>
             <div class="bg-secondary h-1 w-1 rounded-full"></div>
@@ -129,7 +140,7 @@ const close = () => Quit();
         </button>
         <div
           v-if="themeOpen"
-          class="absolute left-1/2 top-full z-50 mt-2 max-h-[60vh] w-60 -translate-x-1/2 overflow-y-auto rounded-box bg-base-200 p-2 shadow-xl">
+          class="absolute left-1/2 top-full z-50 mt-3 max-h-[60vh] w-60 -translate-x-1/2 overflow-y-auto rounded-box bg-base-200 p-2 shadow-xl">
           <button
             v-for="th in THEMES"
             :key="th"

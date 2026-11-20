@@ -40,6 +40,7 @@
   "settings": {
     "title": "Settings",
     "theme": "Theme",
+    "language": "Language",
     "formats": "Supported formats",
     "addFormat": "Add format",
     "presets": "Preset rules",
