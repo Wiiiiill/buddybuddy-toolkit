@@ -26,7 +26,7 @@
     "dev": ""
   },
   "languages": {
-    "en": "EN",
+    "en": "English",
     "zh-Hans": "中文"
   },
   "topbar": {
@@ -39,6 +39,7 @@
   },
   "settings": {
     "title": "Settings",
+    "theme": "Theme",
     "formats": "Supported formats",
     "addFormat": "Add format",
     "presets": "Preset rules",
@@ -48,7 +49,43 @@
     "replaceTo": "Replace with",
     "save": "Save",
     "back": "Back",
-    "saved": "Saved"
+    "saved": "Saved",
+    "resetDefault": "Reset to default",
+    "resetDone": "Reset to default settings"
+  },
+  "themes": {
+    "light": "light",
+    "dark": "dark",
+    "cupcake": "cupcake",
+    "bumblebee": "bumblebee",
+    "emerald": "emerald",
+    "corporate": "corporate",
+    "synthwave": "synthwave",
+    "retro": "retro",
+    "cyberpunk": "cyberpunk",
+    "valentine": "valentine",
+    "halloween": "halloween",
+    "garden": "garden",
+    "forest": "forest",
+    "aqua": "aqua",
+    "lofi": "lofi",
+    "pastel": "pastel",
+    "fantasy": "fantasy",
+    "wireframe": "wireframe",
+    "black": "black",
+    "luxury": "luxury",
+    "dracula": "dracula",
+    "cmyk": "cmyk",
+    "autumn": "autumn",
+    "business": "business",
+    "acid": "acid",
+    "lemonade": "lemonade",
+    "night": "night",
+    "coffee": "coffee",
+    "winter": "winter",
+    "dim": "dim",
+    "nord": "nord",
+    "sunset": "sunset"
   },
   "about": {
     "title": "About",

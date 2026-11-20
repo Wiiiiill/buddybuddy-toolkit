@@ -17,6 +17,8 @@ type Preset struct {
 type Config struct {
 	SupportedFormats []string `json:"supportedFormats"`
 	Presets          []Preset `json:"presets"`
+	Locale           string   `json:"locale"`
+	Theme            string   `json:"theme"`
 }
 
 // defaultConfig 返回默认配置
@@ -26,6 +28,8 @@ func defaultConfig() Config {
 		Presets: []Preset{
 			{Name: "首图", Before: ".jpg", After: "_首图.jpg"},
 		},
+		Locale: "zh-Hans",
+		Theme:  "light",
 	}
 }
 

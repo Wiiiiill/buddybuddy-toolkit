@@ -1,17 +1,17 @@
 <script setup>
 import { onMounted } from "vue";
-import { useThemeStore } from "./stores/theme";
+import { useI18n } from "vue-i18n";
 import { useConfigStore } from "./stores/config";
 import { toast } from "./stores/toast";
 import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue";
 
-const themeStore = useThemeStore();
+const { locale } = useI18n();
 const configStore = useConfigStore();
 
 onMounted(async () => {
-  themeStore.init();
   await configStore.load();
+  locale.value = configStore.locale;
 });
 </script>
 

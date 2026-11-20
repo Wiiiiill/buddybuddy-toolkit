@@ -65,6 +65,16 @@ func (a *App) SaveConfig(cfg Config) error {
 	return saveConfig(cfg)
 }
 
+// ResetConfig 重置为默认配置并保存（供前端恢复默认）
+func (a *App) ResetConfig() (Config, error) {
+	cfg := defaultConfig()
+	a.config = cfg
+	if err := saveConfig(cfg); err != nil {
+		return cfg, err
+	}
+	return cfg, nil
+}
+
 // isImageFile 判断文件名是否为配置中支持的图片格式（大小写不敏感）
 func (a *App) isImageFile(name string) bool {
 	lower := strings.ToLower(name)

@@ -26,7 +26,7 @@
     "dev": "开发"
   },
   "languages": {
-    "en": "EN",
+    "en": "English",
     "zh-Hans": "中文"
   },
   "topbar": {
@@ -39,6 +39,7 @@
   },
   "settings": {
     "title": "设置",
+    "theme": "主题",
     "formats": "支持的格式",
     "addFormat": "添加格式",
     "presets": "预填充规则",
@@ -48,7 +49,43 @@
     "replaceTo": "替换为",
     "save": "保存",
     "back": "返回",
-    "saved": "已保存"
+    "saved": "已保存",
+    "resetDefault": "恢复默认",
+    "resetDone": "已恢复默认设置"
+  },
+  "themes": {
+    "light": "浅色",
+    "dark": "深色",
+    "cupcake": "纸杯蛋糕",
+    "bumblebee": "大黄蜂",
+    "emerald": "翡翠",
+    "corporate": "商务",
+    "synthwave": "合成波",
+    "retro": "复古",
+    "cyberpunk": "赛博朋克",
+    "valentine": "情人节",
+    "halloween": "万圣节",
+    "garden": "花园",
+    "forest": "森林",
+    "aqua": "水蓝",
+    "lofi": "低保真",
+    "pastel": "粉彩",
+    "fantasy": "幻想",
+    "wireframe": "线框",
+    "black": "纯黑",
+    "luxury": "奢华",
+    "dracula": "德古拉",
+    "cmyk": "CMYK",
+    "autumn": "秋色",
+    "business": "商务深",
+    "acid": "酸性",
+    "lemonade": "柠檬水",
+    "night": "夜色",
+    "coffee": "咖啡",
+    "winter": "冬日",
+    "dim": "暗调",
+    "nord": "北欧",
+    "sunset": "日落"
   },
   "about": {
     "title": "关于",

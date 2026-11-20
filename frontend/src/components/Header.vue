@@ -1,27 +1,47 @@
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { WindowMinimise, WindowToggleMaximise, Quit } from "../../wailsjs/runtime";
-import { useThemeStore } from "../stores/theme";
+import { useConfigStore, THEMES } from "../stores/config";
 
 const { t, availableLocales: languages, locale } = useI18n();
 const router = useRouter();
-const themeStore = useThemeStore();
+const configStore = useConfigStore();
 
-// 初始化语言：优先读取本地存储，否则默认中文
-const savedLocale = localStorage.getItem("locale");
-locale.value = savedLocale && languages.includes(savedLocale) ? savedLocale : "zh-Hans";
+const localeCodes = { "en": "EN", "zh-Hans": "ZH" };
+
+const themeOpen = ref(false);
+const langOpen = ref(false);
+
+const toggleThemeMenu = () => {
+  themeOpen.value = !themeOpen.value;
+  langOpen.value = false;
+};
+const toggleLangMenu = () => {
+  langOpen.value = !langOpen.value;
+  themeOpen.value = false;
+};
+const closeMenus = () => {
+  themeOpen.value = false;
+  langOpen.value = false;
+};
 
 const onclickLanguageHandle = (item) => {
   if (item !== locale.value) {
     locale.value = item;
-    localStorage.setItem("locale", item);
+    configStore.setLocale(item);
   }
-  // 选择后关闭下拉菜单
-  if (document.activeElement) {
-    document.activeElement.blur();
-  }
+  langOpen.value = false;
 };
+
+const selectTheme = (th) => {
+  configStore.setTheme(th);
+  themeOpen.value = false;
+};
+
+onMounted(() => document.addEventListener("click", closeMenus));
+onBeforeUnmount(() => document.removeEventListener("click", closeMenus));
 
 const minimise = () => WindowMinimise();
 const toggleMaximise = () => WindowToggleMaximise();
@@ -30,21 +50,21 @@ const close = () => Quit();
 
 <template>
   <header
-    class="draggable relative flex h-12 items-center border-b border-base-300 bg-base-200 select-none">
+    class="draggable relative z-50 flex h-12 items-center border-b border-base-300 bg-base-200 select-none">
     <!-- 标题（左） -->
     <div class="px-3 font-bold">{{ t('g.title') }}</div>
 
     <!-- 语言 + 主题 + 设置（绝对居中，位置固定） -->
     <div
       class="no-drag absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1">
-      <!-- 语言切换（地球图标 + 下拉菜单） -->
-      <div class="dropdown dropdown-bottom dropdown-center">
+      <!-- 语言切换 -->
+      <div class="relative" @click.stop>
         <button
-          tabindex="0"
-          class="btn btn-ghost btn-circle btn-sm"
-          :title="t('topbar.language')">
+          class="btn btn-ghost btn-sm gap-1"
+          :title="t('topbar.language')"
+          @click="toggleLangMenu">
           <svg
-            class="h-5 w-5"
+            class="h-4 w-4 opacity-70"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -56,57 +76,87 @@ const close = () => Quit();
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
             <path d="M2 12h20" />
           </svg>
+          <svg
+            class="h-3 w-3 opacity-60"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
         </button>
-        <ul
-          tabindex="0"
-          class="dropdown-content menu z-50 w-32 gap-1 rounded-box bg-base-200 p-2 shadow">
-          <li v-for="item in [...languages]" :key="item">
-            <button
-              :class="item === locale ? 'active' : ''"
-              @click="onclickLanguageHandle(item)">
-              {{ t('languages.' + item) }}
-            </button>
-          </li>
-        </ul>
+        <div
+          v-if="langOpen"
+          class="absolute left-1/2 top-full z-50 mt-2 flex w-40 -translate-x-1/2 flex-col gap-1 rounded-box bg-base-200 p-2 shadow-xl">
+          <button
+            v-for="item in [...languages]"
+            :key="item"
+            class="flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-base-300"
+            :class="item === locale ? 'font-bold text-primary' : ''"
+            @click="onclickLanguageHandle(item)">
+            <span class="font-mono text-xs font-bold opacity-40">{{ localeCodes[item] }}</span>
+            <span>{{ t('languages.' + item) }}</span>
+          </button>
+        </div>
       </div>
 
-      <!-- 主题切换开关 -->
-      <label class="swap swap-rotate" :title="t('topbar.toggleTheme')">
-        <input
-          type="checkbox"
-          :checked="themeStore.theme === 'dark'"
-          @change="themeStore.toggle()" />
-        <svg
-          class="swap-on h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </svg>
-        <svg
-          class="swap-off h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round">
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
-      </label>
+      <!-- 主题切换 -->
+      <div class="relative" @click.stop>
+        <button
+          class="btn btn-ghost btn-sm gap-1.5"
+          :title="t('topbar.toggleTheme')"
+          @click="toggleThemeMenu">
+          <div class="grid grid-cols-2 gap-0.5 rounded-md border border-base-content/10 p-1">
+            <div class="bg-base-content h-1 w-1 rounded-full"></div>
+            <div class="bg-primary h-1 w-1 rounded-full"></div>
+            <div class="bg-secondary h-1 w-1 rounded-full"></div>
+            <div class="bg-accent h-1 w-1 rounded-full"></div>
+          </div>
+          <svg
+            class="h-3 w-3 opacity-60"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+        <div
+          v-if="themeOpen"
+          class="absolute left-1/2 top-full z-50 mt-2 max-h-[60vh] w-60 -translate-x-1/2 overflow-y-auto rounded-box bg-base-200 p-2 shadow-xl">
+          <button
+            v-for="th in THEMES"
+            :key="th"
+            class="flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-base-300"
+            @click="selectTheme(th)">
+            <div :data-theme="th" class="bg-base-100 grid grid-cols-2 gap-0.5 rounded-md p-1 shadow-sm">
+              <div class="bg-base-content h-1 w-1 rounded-full"></div>
+              <div class="bg-primary h-1 w-1 rounded-full"></div>
+              <div class="bg-secondary h-1 w-1 rounded-full"></div>
+              <div class="bg-accent h-1 w-1 rounded-full"></div>
+            </div>
+            <span class="flex-1">{{ t('themes.' + th) }}</span>
+            <svg
+              v-if="configStore.theme === th"
+              class="h-3 w-3"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </button>
+        </div>
+      </div>
 
       <!-- 设置 -->
       <button

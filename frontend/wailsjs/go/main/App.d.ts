@@ -12,4 +12,6 @@ export function OpenFolder():Promise<string>;
 
 export function ReplaceFilenames(arg1:string,arg2:string,arg3:string):Promise<number>;
 
+export function ResetConfig():Promise<main.Config>;
+
 export function SaveConfig(arg1:main.Config):Promise<void>;

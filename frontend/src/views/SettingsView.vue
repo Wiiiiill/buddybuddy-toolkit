@@ -2,9 +2,10 @@
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import { useConfigStore } from "../stores/config";
+import { useConfigStore, THEMES } from "../stores/config";
+import { showToast } from "../stores/toast";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const router = useRouter();
 const configStore = useConfigStore();
 
@@ -33,6 +34,14 @@ const save = async () => {
   setTimeout(() => (saved.value = false), 2000);
 };
 
+const resetToDefault = async () => {
+  await configStore.reset();
+  formats.value = [...configStore.supportedFormats];
+  presets.value = configStore.presets.map((p) => ({ ...p }));
+  locale.value = configStore.locale;
+  showToast(t('settings.resetDone'));
+};
+
 // 左侧导航点击 → 滚动到对应区域
 const scrollTo = (id) => {
   activeTab.value = id;
@@ -52,16 +61,21 @@ const scrollTo = (id) => {
       <button
         :class="['btn btn-sm justify-start', activeTab === 'settings' ? 'btn-primary' : 'btn-ghost']"
         @click="scrollTo('settings')">
-        ⚙️ {{ t('settings.title') }}
+        {{ t('settings.title') }}
+      </button>
+      <button
+        :class="['btn btn-sm justify-start', activeTab === 'theme' ? 'btn-primary' : 'btn-ghost']"
+        @click="scrollTo('theme')">
+        {{ t('settings.theme') }}
       </button>
       <button
         :class="['btn btn-sm justify-start', activeTab === 'about' ? 'btn-primary' : 'btn-ghost']"
         @click="scrollTo('about')">
-        ℹ️ {{ t('about.title') }}
+        {{ t('about.title') }}
       </button>
     </aside>
 
-    <!-- 右侧长页面：设置在上，关于在下 -->
+    <!-- 右侧长页面：设置 → 主题 → 关于 -->
     <div class="flex-1 overflow-auto px-6 py-8 scroll-pt-8">
       <section id="settings-section" class="mb-16">
         <h2 class="mb-4 text-lg font-bold">{{ t('settings.title') }}</h2>
@@ -86,9 +100,50 @@ const scrollTo = (id) => {
           <button class="btn btn-outline btn-sm" @click="addPreset">+ {{ t('settings.addPreset') }}</button>
         </div>
 
-        <button class="btn btn-primary btn-sm" @click="save">
-          {{ saved ? t('settings.saved') : t('settings.save') }}
-        </button>
+        <div class="flex items-center gap-2">
+          <button class="btn btn-primary btn-sm" @click="save">
+            {{ saved ? t('settings.saved') : t('settings.save') }}
+          </button>
+          <button class="btn btn-ghost btn-sm" @click="resetToDefault">
+            {{ t('settings.resetDefault') }}
+          </button>
+        </div>
+      </section>
+
+      <section id="theme-section" class="mb-16">
+        <h2 class="mb-4 text-lg font-bold">{{ t('settings.theme') }}</h2>
+        <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          <button
+            v-for="th in THEMES"
+            :key="th"
+            class="overflow-hidden rounded-lg border text-left transition-colors hover:border-base-content/40"
+            :class="configStore.theme === th ? 'border-base-content outline outline-2 outline-offset-2 outline-base-content' : 'border-base-content/20'"
+            @click="configStore.setTheme(th)">
+            <div :data-theme="th" class="bg-base-100 text-base-content w-full font-sans">
+              <div class="grid grid-cols-5 grid-rows-3">
+                <div class="bg-base-200 col-start-1 row-span-2 row-start-1"></div>
+                <div class="bg-base-300 col-start-1 row-start-3"></div>
+                <div class="col-span-4 col-start-2 row-span-3 row-start-1 flex flex-col gap-1 p-2">
+                  <div class="font-bold">{{ t('themes.' + th) }}</div>
+                  <div class="flex flex-wrap gap-1">
+                    <div class="bg-primary flex aspect-square w-5 items-center justify-center rounded">
+                      <div class="text-primary-content text-sm font-bold">A</div>
+                    </div>
+                    <div class="bg-secondary flex aspect-square w-5 items-center justify-center rounded">
+                      <div class="text-secondary-content text-sm font-bold">A</div>
+                    </div>
+                    <div class="bg-accent flex aspect-square w-5 items-center justify-center rounded">
+                      <div class="text-accent-content text-sm font-bold">A</div>
+                    </div>
+                    <div class="bg-neutral flex aspect-square w-5 items-center justify-center rounded">
+                      <div class="text-neutral-content text-sm font-bold">A</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
       </section>
 
       <section id="about-section" class="pb-[60vh]">

@@ -19,6 +19,8 @@ export namespace main {
 	export class Config {
 	    supportedFormats: string[];
 	    presets: Preset[];
+	    locale: string;
+	    theme: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Config(source);
@@ -28,6 +30,8 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.supportedFormats = source["supportedFormats"];
 	        this.presets = this.convertValues(source["presets"], Preset);
+	        this.locale = source["locale"];
+	        this.theme = source["theme"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
